@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Nebula Engine — PyxisOS Spatial Prototype (v0.1)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root {
+    --bg: #05060c;
+    --panel: rgba(20, 22, 40, 0.75);
+    --accent: #7c8cff;
+    --text: #e8eaf6;
+    --muted: #9096b8;
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: var(--bg);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    overflow: hidden;
+  }
+  canvas { display: block; }
+  #hud {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+    color: var(--text);
+    background: var(--panel);
+    border: 1px solid rgba(124, 140, 255, 0.25);
+    border-radius: 12px;
+    padding: 14px 18px;
+    backdrop-filter: blur(8px);
+    max-width: 320px;
+  }
+  #hud h1 {
+    font-size: 15px;
+    margin: 0 0 6px;
+    letter-spacing: 0.02em;
+  }
+  #hud p {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.5;
+  }
+  #vr-button {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    padding: 10px 22px;
+    border-radius: 999px;
+    border: 1px solid var(--accent);
+    background: var(--panel);
+    color: var(--text);
+    font-size: 13px;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+  }
+  #vr-button:hover { background: rgba(124, 140, 255, 0.18); }
+  #vr-button:disabled { opacity: 0.4; cursor: not-allowed; }
+</style>
+</head>
+<body>
+
+<div id="hud">
+  <h1>🌗 Nebula Engine — v0.1 prototype</h1>
+  <p>
+    Drag to orbit, scroll to zoom. Each panel is a placeholder "window" floating
+    in space — the seed for Phase VII of the PyxisOS roadmap (see docs/PRD.md).
+    VR entry needs HTTPS or localhost, plus a connected headset.
+  </p>
+</div>
+
+<button id="vr-button" disabled>Checking for VR headset…</button>
+
+<script type="module">
+// Single-file, dependency-free on purpose: this is a scaffold, not the final
+// engine. Orbit controls and the VR button are hand-rolled directly against
+// the WebXR API instead of pulling in the three.js addon modules, so this
+// file has no build step — swap in the real OrbitControls/VRButton addons
+// once the project has an actual bundler.
+import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.184.0/three.module.js';
+
+// ---------- Scene ----------
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x05060c);
+scene.fog = new THREE.Fog(0x05060c, 8, 22);
+
+const camera = new THREE.PerspectiveCamera(
+  55,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  100
+);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.xr.enabled = true;
+document.body.appendChild(renderer.domElement);
+
+// ---------- Lighting ----------
+scene.add(new THREE.AmbientLight(0x8888ff, 0.6));
+const keyLight = new THREE.PointLight(0x7c8cff, 2, 20);
+keyLight.position.set(2, 4, 3);
+scene.add(keyLight);
+const rimLight = new THREE.PointLight(0xff7ce0, 1.2, 20);
+rimLight.position.set(-3, 2, -3);
+scene.add(rimLight);
+
+// ---------- Floor grid, for spatial reference ----------
+const grid = new THREE.GridHelper(20, 20, 0x33395c, 0x1a1d33);
+grid.position.y = -1.2;
+scene.add(grid);
+
+// ---------- "Windows" floating in space ----------
+// Each window is a lightweight stand-in for a real app surface — swap the
+// material's texture for a CanvasTexture/video texture per real window
+// content. Real app content here eventually needs the same sandboxing
+// boundaries as a 2D window — see Phase VI in docs/PRD.md.
+const windowLabels = ['council', 'automation', 'shell', 'files', 'settings'];
+const windows = [];
+
+function makeWindowTexture(label) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512;
+  canvas.height = 320;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#12142a';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = '#7c8cff';
+  ctx.lineWidth = 4;
+  ctx.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
+  ctx.fillStyle = '#e8eaf6';
+  ctx.font = '600 34px Segoe UI, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(label, canvas.width / 2, canvas.height / 2);
+  return new THREE.CanvasTexture(canvas);
+}
+
+windowLabels.forEach((label, i) => {
+  const angle = (i / windowLabels.length) * Math.PI * 2;
+  const radius = 3.2;
+  const geo = new THREE.PlaneGeometry(1.6, 1.0);
+  const mat = new THREE.MeshStandardMaterial({
+    map: makeWindowTexture(label),
+    side: THREE.DoubleSide,
+    roughness: 0.4,
+    metalness: 0.1,
+  });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.set(
+    Math.sin(angle) * radius,
+    0.4 + Math.sin(i) * 0.3,
+    Math.cos(angle) * radius
+  );
+  mesh.lookAt(0, 0.6, 0);
+  scene.add(mesh);
+  windows.push({ mesh, baseY: mesh.position.y, phase: i });
+});
+
+// ---------- Minimal orbit controls (no external addon) ----------
+// Drag to rotate, wheel to zoom, via spherical coordinates around the origin.
+let isDragging = false;
+let prevX = 0;
+let prevY = 0;
+let theta = 0;
+let phi = Math.PI / 2.4;
+let radius = 6;
+
+function updateCameraFromSpherical() {
+  camera.position.x = radius * Math.sin(phi) * Math.sin(theta);
+  camera.position.z = radius * Math.sin(phi) * Math.cos(theta);
+  camera.position.y = radius * Math.cos(phi) + 0.6;
+  camera.lookAt(0, 0.4, 0);
+}
+updateCameraFromSpherical();
+
+renderer.domElement.addEventListener('pointerdown', (e) => {
+  isDragging = true;
+  prevX = e.clientX;
+  prevY = e.clientY;
+});
+window.addEventListener('pointerup', () => (isDragging = false));
+window.addEventListener('pointermove', (e) => {
+  if (!isDragging) return;
+  theta -= (e.clientX - prevX) * 0.006;
+  phi = Math.min(Math.max(phi - (e.clientY - prevY) * 0.006, 0.3), Math.PI - 0.3);
+  prevX = e.clientX;
+  prevY = e.clientY;
+  updateCameraFromSpherical();
+});
+renderer.domElement.addEventListener('wheel', (e) => {
+  radius = Math.min(Math.max(radius + e.deltaY * 0.003, 2.5), 14);
+  updateCameraFromSpherical();
+});
+
+// ---------- Minimal WebXR "Enter VR" button (no external addon) ----------
+const vrButton = document.getElementById('vr-button');
+if ('xr' in navigator) {
+  navigator.xr.isSessionSupported('immersive-vr').then((supported) => {
+    if (supported) {
+      vrButton.textContent = 'Enter VR';
+      vrButton.disabled = false;
+      vrButton.addEventListener('click', async () => {
+        const session = await navigator.xr.requestSession('immersive-vr', {
+          optionalFeatures: ['local-floor', 'bounded-floor'],
+        });
+        renderer.xr.setSession(session);
+      });
+    } else {
+      vrButton.textContent = 'No VR headset detected';
+    }
+  });
+} else {
+  vrButton.textContent = 'WebXR not available in this browser';
+}
+
+// ---------- Resize ----------
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// ---------- Render loop ----------
+renderer.setAnimationLoop((time) => {
+  windows.forEach((w) => {
+    w.mesh.position.y = w.baseY + Math.sin(time * 0.0006 + w.phase) * 0.08;
+    w.mesh.rotation.y += 0.0015;
+  });
+  renderer.render(scene, camera);
+});
+</script>
+</body>
+</html>
