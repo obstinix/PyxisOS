@@ -1,11 +1,11 @@
-import { AgentContext, AgentOpinion, ArbitrationResult } from '../types';
-import { LLMProvider } from '../llm/provider';
-import { Logger } from '../audit/logger';
+import { AgentContext, AgentOpinion, ArbitrationResult } from "../types";
+import { LLMProvider } from "../llm/provider";
+import { Logger } from "../audit/logger";
 
 export class DecisionArbitrationLayer {
   constructor(
     private provider: LLMProvider,
-    private logger: Logger
+    private logger: Logger,
   ) {}
 
   /**
@@ -15,20 +15,25 @@ export class DecisionArbitrationLayer {
    */
   async arbitrate(
     context: AgentContext,
-    opinions: Array<{ agentId: string; opinion: AgentOpinion }>
+    opinions: Array<{ agentId: string; opinion: AgentOpinion }>,
   ): Promise<ArbitrationResult> {
     // 1. Log all input opinions for observability
     for (const op of opinions) {
-      this.logger.logAgentCall(op.agentId, context.query, op.opinion.opinion, op.opinion.confidence);
+      this.logger.logAgentCall(
+        op.agentId,
+        context.query,
+        op.opinion.opinion,
+        op.opinion.confidence,
+      );
     }
 
     // 2. Format agent outputs for the judge pass
     const formattedOpinions = opinions
       .map(
         (o) =>
-          `[Agent: ${o.agentId}] (Confidence: ${o.opinion.confidence})\nOpinion: ${o.opinion.opinion}\nRationale: ${o.opinion.rationale}`
+          `[Agent: ${o.agentId}] (Confidence: ${o.opinion.confidence})\nOpinion: ${o.opinion.opinion}\nRationale: ${o.opinion.rationale}`,
       )
-      .join('\n\n');
+      .join("\n\n");
 
     // 3. Build arbitration prompt
     const systemPrompt = `You are the Decision Arbitration Layer for the PyxisOS Astral Consensus Engine.
@@ -69,7 +74,7 @@ NOTE: Future versions (v2) of this layer will implement voting/debate mechanics 
         context.query,
         result.synthesizedDecision,
         result.conflictFlagged,
-        result.conflictDetails
+        result.conflictDetails,
       );
 
       return result;
@@ -84,7 +89,7 @@ NOTE: Future versions (v2) of this layer will implement voting/debate mechanics 
         context.query,
         errorResult.synthesizedDecision,
         errorResult.conflictFlagged,
-        errorResult.conflictDetails
+        errorResult.conflictDetails,
       );
 
       return errorResult;
