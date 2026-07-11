@@ -1,8 +1,8 @@
 ---
-name: New Astral Council agent
-about: Propose a new specialist agent for the Council
+name: New Astral Consensus Engine agent
+about: Propose a new specialist agent for the Astral Consensus Engine
 title: "[AGENT] "
-labels: phase:astral-council, track:A
+labels: phase:astral-consensus, track:A
 ---
 
 **Agent name**
@@ -15,7 +15,7 @@ labels: phase:astral-council, track:A
 **Proposed system prompt / behavior summary**
 
 
-**How should the Consensus Engine weigh this agent's input?**
+**How should the Decision Arbitration Layer weigh this agent's input?**
 *(e.g. veto power on certain topics, standard vote, advisory-only — see `docs/PRD.md` Section 10, Phase III)*
 
 
