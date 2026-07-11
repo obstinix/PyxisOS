@@ -1,5 +1,5 @@
-import { Agent } from '../agents/base';
-import { AgentContext } from '../types';
+import { Agent } from "../agents/base";
+import { AgentContext } from "../types";
 
 export class Router {
   constructor(private agents: Agent[]) {}
@@ -8,7 +8,7 @@ export class Router {
    * Routes the given query context to the appropriate subset of agents.
    * MVP: Always returns all registered agents.
    */
-  async route(context: AgentContext): Promise<Agent[]> {
+  async route(_context: AgentContext): Promise<Agent[]> {
     return this.agents;
   }
 }
