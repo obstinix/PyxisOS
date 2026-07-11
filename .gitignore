@@ -1,0 +1,23 @@
+# Rust build artifacts
+target/
+
+# IDE / Editor configurations
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Build artifacts
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+*.bin
+*.iso
