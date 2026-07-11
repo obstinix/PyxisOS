@@ -6,7 +6,7 @@ Thanks for your interest — PyxisOS is early-stage, which means there's real ro
 
 PyxisOS splits work into two tracks (full reasoning in [`docs/PRD.md`](docs/PRD.md), Section 5):
 
-- **Track A — PyxisOS Shell** (`council/`, `automation/`, `shell/`, `intelligence/`, `nebula/`, `network/`): the AI Council, automation engine, desktop shell, and spatial prototype, built on Linux/KVM. No OS-development background required — this is mostly application-level work (agent design/prompting, orchestration logic, frontend, 3D/graphics).
+- **Track A — PyxisOS Shell** (`council/`, `automation/`, `shell/`, `intelligence/`, `nebula/`, `network/`): the Astral Council, automation engine, desktop shell, and spatial prototype, built on Linux/KVM. No OS-development background required — this is mostly application-level work (agent design/prompting, orchestration logic, frontend, 3D/graphics).
 - **Track B — PyxisOS Native** (`native/lunar-core/`, `native/aegis/`, and eventually a native `nebula/`/`shell/`): the from-scratch kernel, hypervisor, and native spatial engine. Systems programming background (Rust/C, OS internals) genuinely helps here — this is long-horizon, harder-to-parallelize work.
 
 Both are welcome and both are real engineering. Pick based on interest and background, not "seniority" — Track A is not "the easy track," it's a differently scoped one, and it's where the project's actual novelty is being proven out.
@@ -43,7 +43,7 @@ Both are welcome and both are real engineering. Pick based on interest and backg
 
 ## Security disclosures
 
-If you find an isolation, sandboxing, or privilege-escalation issue — especially in `native/aegis/` or the automation approval-gate logic in `automation/` — please open a private security advisory on the repo rather than a public issue. A dedicated `SECURITY.md` with a disclosure process is on the list; until it lands, flag it clearly as security-sensitive in whatever channel you use.
+If you find an isolation, sandboxing, or privilege-escalation issue — especially in `native/aegis/` or the automation approval-gate logic in `automation/` — please open a private security advisory on the repo rather than a public issue. A dedicated [SECURITY.md](file:///c:/ProjectsPP/Pyxis/files/PyxisOS-repo-scaffold/PyxisOS/SECURITY.md) contains our security policy and disclosure process. Please refer to it before reporting any vulnerability.
 
 ## Code of conduct
 
