@@ -1,8 +1,8 @@
-# 🌌 PyxisOS
+# PyxisOS
 
-**The first autonomous, AI-native operating system.**
+**An autonomous, AI-native operating system designed to coordinate intent, reason via multi-agent consensus, and execute workflows securely.**
 
-> User → AI Council → Autonomous Agent Network → Operating System → Hardware
+> User → Astral Council → Celestial Automation → Operating System → Hardware
 
 PyxisOS reimagines the OS as an intent-coordinator, not just a resource manager: a native multi-agent "Council" reasons about what you're trying to do, an automation engine executes multi-step work on your behalf with your oversight, and — longer-term — a purpose-built kernel and hypervisor secure all of it.
 
@@ -12,7 +12,7 @@ PyxisOS reimagines the OS as an intent-coordinator, not just a resource manager:
 
 Building a kernel, a hypervisor, and a 3D engine from scratch is, individually, a multi-year systems effort — comparable in scope to Linux, Xen, and a game engine. So PyxisOS splits into two tracks that run in parallel rather than one long linear roadmap:
 
-- **Track A — PyxisOS Shell.** The AI Council, automation engine, desktop shell, and spatial (3D) prototype — built on a proven Linux/KVM base. This is where the novelty lives, ships in weeks-to-months, and is where most contributions should start.
+- **Track A — PyxisOS Shell.** The Astral Council, automation engine, desktop shell, and spatial (3D) prototype — built on a proven Linux/KVM base. This is where the novelty lives, ships in weeks-to-months, and is where most contributions should start.
 - **Track B — PyxisOS Native.** A from-scratch kernel, hypervisor, and native spatial engine — a long-horizon systems-research effort for contributors who want to work at that level.
 
 Full reasoning in [`docs/PRD.md`](docs/PRD.md), Section 5.
