@@ -21,3 +21,11 @@ desktop.ini
 *.dylib
 *.bin
 *.iso
+
+# Node.js dependency and build directories
+node_modules/
+dist/
+consensus/.env
+consensus/dist/
+consensus/node_modules/
+
