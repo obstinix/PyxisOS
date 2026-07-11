@@ -4,6 +4,6 @@
 
 The multi-agent consensus layer. Each of the eight specialist agents (Research, Security, Developer, Planner, Creative, Logic, Ethics, Statistical) independently analyzes a request; the Decision Arbitration Layer synthesizes their input into one transparent answer.
 
-**Status:** not yet started — this is a good entry point if you want to work on agent design/prompting or orchestration logic. No OS-dev background needed.
+**Status:** implemented MVP — features Research, Security, and Logic agents, a single-pass Decision Arbitration Layer, and an execution CLI. Ready for expansion to other specialist agent roles. See `docs/PRD.md`, Section 10 (Phase III) for detail.
 
 See `docs/PRD.md`, Section 10 (Phase III) for the full spec, and `research/` for the evaluation harness that should back any change here.
