@@ -9,6 +9,7 @@
 | **Last updated** | July 7, 2026 |
 
 **Changelog**
+- **v0.3** — Modernized architecture documentation (added system overview, boot sequence, memory, and scheduling subsystems), formalized research paper outline, migrated dev environment setup to Rust toolchain, and established Rust workspace in `native/`.
 - **v0.2** — Nebula Engine (Phase VII) expanded with a concrete tech decision, a scoped v0.1 milestone, and a real starter prototype now in the repo at `nebula/prototype/`. Repo structure (Section 9) synced to the actual scaffold. README.md, CONTRIBUTING.md, and issue templates added.
 - **v0.1** — Initial draft.
 
@@ -45,7 +46,7 @@ AI shows up only at the application layer — a chatbot window, a copilot plugin
 
 PyxisOS reframes the pipeline as:
 
-> User → AI Council → Autonomous Agent Network → Operating System → Hardware
+> User → Astral Council → Celestial Automation → Operating System → Hardware
 
 The OS becomes an intent-coordinator, not just a resource manager: it interprets what the user is trying to do, routes work to specialized agents, executes it through secured, sandboxed automation, and continuously adapts — while keeping the user in control. Applications become services in a larger ecosystem rather than isolated silos.
 
