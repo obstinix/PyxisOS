@@ -2,9 +2,9 @@
 
 **An autonomous, AI-native operating system designed to coordinate intent, reason via multi-agent consensus, and execute workflows securely.**
 
-> User → Astral Council → Celestial Automation → Operating System → Hardware
+> User → Astral Consensus Engine → Celestial Automation → Operating System → Hardware
 
-PyxisOS reimagines the OS as an intent-coordinator, not just a resource manager: a native multi-agent "Council" reasons about what you're trying to do, an automation engine executes multi-step work on your behalf with your oversight, and — longer-term — a purpose-built kernel and hypervisor secure all of it.
+PyxisOS reimagines the OS as an intent-coordinator, not just a resource manager: a native multi-agent "Consensus Engine" reasons about what you're trying to do, an automation engine executes multi-step work on your behalf with your oversight, and — longer-term — a purpose-built kernel and hypervisor secure all of it.
 
 **Status:** early development. Architecture and scope are actively being defined — see [`docs/PRD.md`](docs/PRD.md) for the full plan.
 
@@ -12,7 +12,7 @@ PyxisOS reimagines the OS as an intent-coordinator, not just a resource manager:
 
 Building a kernel, a hypervisor, and a 3D engine from scratch is, individually, a multi-year systems effort — comparable in scope to Linux, Xen, and a game engine. So PyxisOS splits into two tracks that run in parallel rather than one long linear roadmap:
 
-- **Track A — PyxisOS Shell.** The Astral Council, automation engine, desktop shell, and spatial (3D) prototype — built on a proven Linux/KVM base. This is where the novelty lives, ships in weeks-to-months, and is where most contributions should start.
+- **Track A — PyxisOS Shell.** The Astral Consensus Engine, automation engine, desktop shell, and spatial (3D) prototype — built on a proven Linux/KVM base. This is where the novelty lives, ships in weeks-to-months, and is where most contributions should start.
 - **Track B — PyxisOS Native.** A from-scratch kernel, hypervisor, and native spatial engine — a long-horizon systems-research effort for contributors who want to work at that level.
 
 Full reasoning in [`docs/PRD.md`](docs/PRD.md), Section 5.
@@ -23,7 +23,7 @@ Full reasoning in [`docs/PRD.md`](docs/PRD.md), Section 5.
 |---|---|---|---|---|
 | 🌑 | I — New Moon | Lunar Core | B | The kernel |
 | 🌒 | II — Waxing Crescent | Stellar Canvas | A → B | The desktop environment |
-| 🌓 | III — First Quarter | Astral Council | A | Multi-agent consensus |
+| 🌓 | III — First Quarter | Astral Consensus Engine | A | Multi-agent consensus |
 | 🌔 | IV — Waxing Gibbous | Celestial Automation | A | Autonomous workflows |
 | 🌕 | V — Full Moon | Orbital Intelligence | A | Adaptive, learning UX |
 | 🌖 | VI — Waning Gibbous | Aegis Hypervisor | A → B | Isolation & security |
@@ -41,7 +41,7 @@ Most of this repo is scaffolding and specification — that's normal for a proje
 ## Repository layout
 
 ```
-council/         Astral Council — multi-agent consensus (Phase III)
+consensus/       Astral Consensus Engine — multi-agent consensus (Phase III)
 automation/      Celestial Automation — workflow engine (Phase IV)
 shell/           Stellar Canvas — desktop environment (Phase II)
 intelligence/    Orbital Intelligence — adaptive UX (Phase V)
@@ -58,7 +58,7 @@ Every module folder has its own `README.md` explaining scope, status, and where 
 
 There's no build yet beyond the Nebula prototype — the project is at the "define the architecture, start on Track A" stage. The best way in:
 
-1. Read [`docs/PRD.md`](docs/PRD.md) for the full plan, especially Section 14 (Open Decisions) — some of the highest-leverage questions (build-vs-adopt on the kernel, LLM backend for the Council) aren't resolved yet.
+1. Read [`docs/PRD.md`](docs/PRD.md) for the full plan, especially Section 14 (Open Decisions) — some of the highest-leverage questions (build-vs-adopt on the kernel, LLM backend for the Consensus Engine) aren't resolved yet.
 2. Check open issues labeled `good-first-issue`, or pick by track: `track:A` for the AI/shell layer, `track:B` for kernel/hypervisor/native work.
 3. See [`CONTRIBUTING.md`](CONTRIBUTING.md) for branch/PR conventions and how the two tracks are organized.
 
