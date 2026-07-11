@@ -1,11 +1,12 @@
-import { Agent } from './base';
-import { AgentContext, AgentOpinion } from '../types';
-import { LLMProvider } from '../llm/provider';
+import { Agent } from "./base";
+import { AgentContext, AgentOpinion } from "../types";
+import { LLMProvider } from "../llm/provider";
 
 export class ResearchAgent implements Agent {
-  readonly id = 'research';
-  readonly name = 'Research Agent';
-  readonly description = 'Gathers factual context, compiles technical specifications, and verifies details.';
+  readonly id = "research";
+  readonly name = "Research Agent";
+  readonly description =
+    "Gathers factual context, compiles technical specifications, and verifies details.";
 
   constructor(private provider: LLMProvider) {}
 
@@ -31,8 +32,9 @@ Do NOT wrap the JSON in markdown code blocks. Do NOT include any explanations ou
       const parsed = JSON.parse(responseText.trim());
       return {
         opinion: parsed.opinion || responseText,
-        confidence: typeof parsed.confidence === 'number' ? parsed.confidence : 0.5,
-        rationale: parsed.rationale || 'Parsed response successfully.',
+        confidence:
+          typeof parsed.confidence === "number" ? parsed.confidence : 0.5,
+        rationale: parsed.rationale || "Parsed response successfully.",
       };
     } catch (error: any) {
       // Fallback in case of parsing or API issues
