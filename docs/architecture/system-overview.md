@@ -9,7 +9,7 @@ PyxisOS operates through a five-layer execution model:
 1. **User (Intent / Input)**
    - The user interacts with the system through the Stellar Canvas (desktop shell).
    - They specify high-level intents, ask questions, or configure automations.
-2. **Astral Council (Consensus Layer)**
+2. **Astral Consensus Engine (Consensus Layer)**
    - The primary reasoning component comprising eight specialized agents (Research, Security, Developer, Planner, Creative, Logic, Ethics, Statistical).
    - Resolves intent into structured, auditable plans through consensus.
 3. **Celestial Automation (Execution / Workflow Layer)**
@@ -31,25 +31,25 @@ To facilitate immediate deployment and parallel development, PyxisOS uses a dual
 
 ### Track B (PyxisOS Native)
 - Replaces the Linux host substrate with a purpose-built kernel (**Lunar Core**) and a custom Type-1 hypervisor (**Aegis**).
-- Transitioning from Track A to Track B requires no refactoring of the Astral Council or Celestial Automation logic, as long as the boundary between the shell and the host substrate remains cleanly abstracted behind generic system interfaces.
+- Transitioning from Track A to Track B requires no refactoring of the Astral Consensus Engine or Celestial Automation logic, as long as the boundary between the shell and the host substrate remains cleanly abstracted behind generic system interfaces.
 
 ```
-┌───────────────────────────────────────────────────────────┐
-│                 PyxisOS Shell  —  Track A                  │
-│                                                             │
-│   Stellar Canvas (Desktop/UX)  ⇄  Orbital Intelligence     │
-│                          │                                 │
-│           Astral Council (Multi-Agent Consensus)           │
-│                          │                                 │
-│             Celestial Automation (Workflow Engine)         │
-│                          │                                 │
-│           Constellation Network (Device Federation)        │
-└────────────────────────────┬────────────────────────────────┘
-                             │  syscalls / APIs
-┌────────────────────────────▼────────────────────────────────┐
-│  Host substrate                                              │
+┌──────────────────────────────────────────────────────────────┐
+│                   PyxisOS Shell — Track A                    │
+│                                                              │
+│      Stellar Canvas (Desktop/UX) ⇄ Orbital Intelligence      │
+│                                  │                           │
+│       Astral Consensus Engine (Multi-Agent Consensus)        │
+│                                  │                           │
+│            Celestial Automation (Workflow Engine)            │
+│                                  │                           │
+│           Constellation Network (Device Federation)          │
+└──────────────────────────────────┬───────────────────────────┘
+                                   │  syscalls / APIs
+┌──────────────────────────────────▼───────────────────────────┐
+│                        Host substrate                        │
 │   v1 (Track A):  Linux kernel  +  KVM / Firecracker sandbox  │
-│   v2+ (Track B): Lunar Core (custom kernel) + Aegis Hypervisor│
-└────────────────────────────┬────────────────────────────────┘
-                        Physical Hardware
+│ v2+ (Track B): Lunar Core (custom kernel) + Aegis Hypervisor │
+└──────────────────────────────────┬───────────────────────────┘
+                       Physical Hardware
 ```
