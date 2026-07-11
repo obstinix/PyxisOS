@@ -1,4 +1,4 @@
-import { AgentContext, AgentOpinion } from '../types';
+import { AgentContext, AgentOpinion } from "../types";
 
 export interface Agent {
   id: string;
