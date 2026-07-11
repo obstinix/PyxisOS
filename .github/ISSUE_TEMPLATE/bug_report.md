@@ -5,7 +5,7 @@ title: "[BUG] "
 labels: bug
 ---
 
-**Module / phase** (e.g. `council/`, `phase:astral-council`):
+**Module / phase** (e.g. `consensus/`, `phase:astral-consensus`):
 
 **Track** (A/B):
 
