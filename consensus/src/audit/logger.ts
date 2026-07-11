@@ -1,12 +1,12 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from "fs";
+import * as path from "path";
 
 export class Logger {
   private logPath: string;
 
   constructor() {
     // Write audit logs to the consensus root folder
-    this.logPath = path.join(__dirname, '../../audit.log');
+    this.logPath = path.join(__dirname, "../../audit.log");
   }
 
   /**
@@ -19,9 +19,9 @@ export class Logger {
       ...metadata,
     };
 
-    const logLine = JSON.stringify(logEntry) + '\n';
+    const logLine = JSON.stringify(logEntry) + "\n";
     try {
-      fs.appendFileSync(this.logPath, logLine, 'utf8');
+      fs.appendFileSync(this.logPath, logLine, "utf8");
     } catch (err: any) {
       console.error(`Failed to write to audit log: ${err.message}`);
     }
@@ -30,8 +30,13 @@ export class Logger {
   /**
    * Helper to log agent analysis step.
    */
-  logAgentCall(agentId: string, query: string, opinion: string, confidence: number): void {
-    this.log('agent_call', {
+  logAgentCall(
+    agentId: string,
+    query: string,
+    opinion: string,
+    confidence: number,
+  ): void {
+    this.log("agent_call", {
       agentId,
       query,
       opinion,
@@ -46,9 +51,9 @@ export class Logger {
     query: string,
     decision: string,
     conflictFlagged: boolean,
-    conflictDetails?: string
+    conflictDetails?: string,
   ): void {
-    this.log('arbitration_decision', {
+    this.log("arbitration_decision", {
       query,
       decision,
       conflictFlagged,
