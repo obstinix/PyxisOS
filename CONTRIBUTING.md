@@ -29,7 +29,7 @@ Both are welcome and both are real engineering. Pick based on interest and backg
 ## Code style
 
 - **Rust** (Track B, and any Track A Rust components): `rustfmt` + `clippy`, no warnings on merge.
-- **JS/TS** (Track A shell/web components, including `nebula/prototype/`): `prettier` + `eslint`.
+- **JS/TS** (Track A components: `consensus/`, `automation/`, `shell/`, `nebula/prototype/`, and other web/orchestration logic): `prettier` + `eslint`.
 - A formal style guide will land in `docs/` as the codebase grows. Until then, match the surrounding code.
 
 ## Proposing changes to the PRD itself
