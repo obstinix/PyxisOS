@@ -1,14 +1,14 @@
-import { Router } from './routing/router';
-import { DecisionArbitrationLayer } from './arbitration/decisionArbitrationLayer';
-import { AnthropicProvider } from './llm/anthropicProvider';
-import { ResearchAgent } from './agents/research';
-import { SecurityAgent } from './agents/security';
-import { LogicAgent } from './agents/logic';
-import { Logger } from './audit/logger';
-import { AgentContext } from './types';
+import { Router } from "./routing/router";
+import { DecisionArbitrationLayer } from "./arbitration/decisionArbitrationLayer";
+import { AnthropicProvider } from "./llm/anthropicProvider";
+import { ResearchAgent } from "./agents/research";
+import { SecurityAgent } from "./agents/security";
+import { LogicAgent } from "./agents/logic";
+import { Logger } from "./audit/logger";
+import { AgentContext } from "./types";
 
 async function main() {
-  const query = process.argv.slice(2).join(' ');
+  const query = process.argv.slice(2).join(" ");
   if (!query) {
     console.log('Usage: npm run cli -- "Your query string here"');
     process.exit(1);
@@ -17,7 +17,7 @@ async function main() {
   // Check API key availability
   if (!process.env.ANTHROPIC_API_KEY) {
     console.warn(
-      'Warning: ANTHROPIC_API_KEY environment variable is not configured. Live execution will fail.'
+      "Warning: ANTHROPIC_API_KEY environment variable is not configured. Live execution will fail.",
     );
   }
 
@@ -41,7 +41,9 @@ async function main() {
   try {
     console.log(`[Router] Selecting active experts...`);
     const activeAgents = await router.route(context);
-    console.log(`[Router] Dispatched query to: ${activeAgents.map((a) => a.name).join(', ')}\n`);
+    console.log(
+      `[Router] Dispatched query to: ${activeAgents.map((a) => a.name).join(", ")}\n`,
+    );
 
     console.log(`[Agents] Analyzing request in parallel...`);
     const opinionPromises = activeAgents.map(async (agent) => {
@@ -61,15 +63,20 @@ async function main() {
     for (const op of opinions) {
       console.log(`--------------------------------------------------`);
       console.log(
-        `👤 ${op.name} Opinion (Confidence: ${op.opinion.confidence.toFixed(2)}) [${op.latency}ms]`
+        `👤 ${op.name} Opinion (Confidence: ${op.opinion.confidence.toFixed(2)}) [${op.latency}ms]`,
       );
       console.log(`Rationale: ${op.opinion.rationale}`);
       console.log(`Stance/Opinion:\n${op.opinion.opinion}\n`);
     }
 
     console.log(`--------------------------------------------------`);
-    console.log(`[Arbitrator] Performing single judge pass to synthesize consensus...`);
-    const arbitrationInput = opinions.map((o) => ({ agentId: o.agentId, opinion: o.opinion }));
+    console.log(
+      `[Arbitrator] Performing single judge pass to synthesize consensus...`,
+    );
+    const arbitrationInput = opinions.map((o) => ({
+      agentId: o.agentId,
+      opinion: o.opinion,
+    }));
     const result = await arbitrationLayer.arbitrate(context, arbitrationInput);
 
     console.log(`\n==================================================`);
