@@ -17,7 +17,7 @@ This document formalizes the mapping between the PyxisOS system components and t
 - **Reference**: [PRD.md](file:///c:/ProjectsPP/Pyxis/files/PyxisOS-repo-scaffold/PyxisOS/docs/PRD.md) §5 & §8.
 
 ### 4. Multi-Agent Consensus Framework
-- **Scope**: The Astral Council, defining the specialization of the 8 constituent agents and synthesis algorithms.
+- **Scope**: The Astral Consensus Engine, defining the specialization of the 8 constituent agents and synthesis algorithms.
 - **Reference**: [PRD.md](file:///c:/ProjectsPP/Pyxis/files/PyxisOS-repo-scaffold/PyxisOS/docs/PRD.md) §10 (Phase III).
 
 ### 5. Autonomous Workflow Engine
