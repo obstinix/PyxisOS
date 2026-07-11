@@ -5,8 +5,8 @@
 | **Project** | PyxisOS — Autonomous AI-Native Operating System |
 | **Repository** | https://github.com/obstinix/PyxisOS |
 | **License** | Apache-2.0 (already in repo ✅) |
-| **Status** | Draft v0.2 |
-| **Last updated** | July 7, 2026 |
+| **Status** | Draft v0.3 |
+| **Last updated** | July 12, 2026 |
 
 **Changelog**
 - **v0.3** — Modernized architecture documentation (added system overview, boot sequence, memory, and scheduling subsystems), formalized research paper outline, migrated dev environment setup to Rust toolchain, and established Rust workspace in `native/`.
@@ -46,7 +46,7 @@ AI shows up only at the application layer — a chatbot window, a copilot plugin
 
 PyxisOS reframes the pipeline as:
 
-> User → Astral Council → Celestial Automation → Operating System → Hardware
+> User → Astral Consensus Engine → Celestial Automation → Operating System → Hardware
 
 The OS becomes an intent-coordinator, not just a resource manager: it interprets what the user is trying to do, routes work to specialized agents, executes it through secured, sandboxed automation, and continuously adapts — while keeping the user in control. Applications become services in a larger ecosystem rather than isolated silos.
 
@@ -56,7 +56,7 @@ The OS becomes an intent-coordinator, not just a resource manager: it interprets
 
 | ID | Goal |
 |---|---|
-| G1 | Ship a working multi-agent **Astral Council** that gives a user request independent, specialist analysis and a transparent, synthesized answer. |
+| G1 | Ship a working multi-agent **Astral Consensus Engine** that gives a user request independent, specialist analysis and a transparent, synthesized answer. |
 | G2 | Provide autonomous multi-step workflow execution (**Celestial Automation**) with user oversight and a clear audit trail. |
 | G3 | Build a distinctive desktop shell (**Stellar Canvas**) as the primary surface for the above. |
 | G4 | Establish PyxisOS as a credible open research platform for human-AI collaborative computing — generating the data the companion research paper needs. |
@@ -75,7 +75,7 @@ This is the main structural change this PRD makes to the original plan, so it's 
 
 The fix isn't to shrink the ambition — it's to separate what's genuinely novel here (the AI layer) from what's genuinely hard-but-solved-elsewhere (kernels, hypervisors, 3D engines):
 
-- **Track A — "PyxisOS Shell"** (Phases II, III, IV, V, VIII, and prototypes of VI/VII): the Astral Council, Celestial Automation, Stellar Canvas, and friends, built as an application/desktop-shell layer on a proven Linux kernel with KVM/Firecracker for sandboxing. This is where the actual novelty lives, and it can be demonstrated, tested, and published on in **weeks to months**, not years.
+- **Track A — "PyxisOS Shell"** (Phases II, III, IV, V, VIII, and prototypes of VI/VII): the Astral Consensus Engine, Celestial Automation, Stellar Canvas, and friends, built as an application/desktop-shell layer on a proven Linux kernel with KVM/Firecracker for sandboxing. This is where the actual novelty lives, and it can be demonstrated, tested, and published on in **weeks to months**, not years.
 - **Track B — "PyxisOS Native"** (Phase I in full, plus native Phase VI/VII once Track A validates the concepts): the from-scratch kernel, custom hypervisor, and native spatial engine, run as a long-horizon systems-research effort — ideally by contributors who specialize in kernels/security/graphics, once Track A has proven the AI-native UX is worth the investment (and, realistically, once the project has attracted the specialist contributors or funding that this kind of work requires).
 
 Every phase below is tagged with its track. Nothing about the original phases, codenames, or architecture changes — this just tells you what can start **this month** versus what's a **multi-year parallel effort**.
@@ -85,14 +85,14 @@ Every phase below is tagged with its track. Nothing about the original phases, c
 | Persona | Needs |
 |---|---|
 | **Alex, the power user** | Wants an AI-augmented desktop that automates repetitive workflows without babysitting eight different app-specific bots. |
-| **Dr. Sam, the researcher** | Studies human-AI collaboration / multi-agent systems; wants PyxisOS's Council as a platform to run and publish experiments on. |
+| **Dr. Sam, the researcher** | Wants PyxisOS's Consensus Engine as a platform to run and publish experiments on. |
 | **Jordan, the contributor** | Open-source dev or OS hobbyist who wants to contribute — either to the AI/shell layer now, or to kernel/hypervisor work later. |
 | **(Later) IT/Ops teams** | Long-horizon: autonomous, auditable IT operations. Not a v1 target; noted for roadmap context. |
 
 ## 7. Success Metrics
 
 **Track A**
-- Council answer quality vs. a single-agent baseline, on a fixed evaluation set (this is the single most important number for the whole project — see risk note in Section 10, Phase III).
+- Consensus Engine answer quality vs. a single-agent baseline, on a fixed evaluation set (this is the single most important number for the whole project — see risk note in Section 10, Phase III).
 - % of automation workflows completed without user correction; % of destructive actions correctly gated for approval.
 - Contributor/user growth: GitHub stars/forks/issues, weekly active shell users.
 
@@ -106,29 +106,29 @@ Every phase below is tagged with its track. Nothing about the original phases, c
 ## 8. System Architecture
 
 ```
-┌───────────────────────────────────────────────────────────┐
-│                 PyxisOS Shell  —  Track A                  │
-│                                                             │
-│   Stellar Canvas (Desktop/UX)  ⇄  Orbital Intelligence     │
-│                          │                                 │
-│           Astral Council (Multi-Agent Consensus)           │
-│  Research · Security · Developer · Planner · Creative ·    │
-│         Logic · Ethics · Statistical → Consensus Engine    │
-│                          │                                 │
-│             Celestial Automation (Workflow Engine)         │
-│                          │                                 │
-│           Constellation Network (Device Federation)        │
-└────────────────────────────┬────────────────────────────────┘
-                             │  syscalls / APIs
-┌────────────────────────────▼────────────────────────────────┐
-│  Host substrate                                              │
+┌──────────────────────────────────────────────────────────────┐
+│                   PyxisOS Shell — Track A                    │
+│                                                              │
+│      Stellar Canvas (Desktop/UX) ⇄ Orbital Intelligence      │
+│                                  │                           │
+│       Astral Consensus Engine (Multi-Agent Consensus)        │
+│    Research · Security · Developer · Planner · Creative ·    │
+│  Logic · Ethics · Statistical → Decision Arbitration Layer   │
+│                                  │                           │
+│            Celestial Automation (Workflow Engine)            │
+│                                  │                           │
+│           Constellation Network (Device Federation)          │
+└──────────────────────────────────┬───────────────────────────┘
+                                   │  syscalls / APIs
+┌──────────────────────────────────▼───────────────────────────┐
+│                        Host substrate                        │
 │   v1 (Track A):  Linux kernel  +  KVM / Firecracker sandbox  │
-│   v2+ (Track B): Lunar Core (custom kernel) + Aegis Hypervisor│
-└────────────────────────────┬────────────────────────────────┘
-                        Physical Hardware
+│ v2+ (Track B): Lunar Core (custom kernel) + Aegis Hypervisor │
+└──────────────────────────────────┬───────────────────────────┘
+                       Physical Hardware
 ```
 
-The Track A shell talks to the host through ordinary syscalls/APIs today, and migrates to native Lunar Core/Aegis interfaces once Track B matures — the Council, Automation engine, and Shell code shouldn't need a rewrite to make that jump if the interface boundary is kept clean from day one.
+The Track A shell talks to the host through ordinary syscalls/APIs today, and migrates to native Lunar Core/Aegis interfaces once Track B matures — the Consensus Engine, Automation engine, and Shell code shouldn't need a rewrite to make that jump if the interface boundary is kept clean from day one.
 
 ## 9. Repository & Engineering Setup
 
@@ -143,7 +143,7 @@ PyxisOS/
 │   ├── PRD.md                   ← this document
 │   ├── architecture/
 │   └── research-paper/          ← paper drafts, benchmark write-ups
-├── council/                     ← Astral Council agents + consensus engine
+├── consensus/                   ← Astral Consensus Engine agents + Decision Arbitration Layer
 ├── automation/                  ← Celestial Automation workflow engine
 ├── shell/                       ← Stellar Canvas (Track A, built on Linux)
 ├── intelligence/                 ← Orbital Intelligence adaptive layer
@@ -159,9 +159,9 @@ PyxisOS/
 ```
 
 **Suggestions:**
-- Issue labels by phase (`phase:lunar-core`, `phase:astral-council`, …) and by track (`track:A`, `track:B`) so contributors can self-select by interest and time commitment.
-- Given `native/` will eventually need very different CI (QEMU boot tests, kernel-specific tooling) than `council/`/`shell/`/`nebula/` (standard app/web CI), keep them decoupled enough to split into a separate repo later without much pain — don't let them share build tooling more than necessary.
-- A CI workflow (`.github/workflows/`) is deliberately not scaffolded yet — add it once `council/` or `shell/` has real code to lint/test against, rather than shipping an empty pipeline.
+- Issue labels by phase (`phase:lunar-core`, `phase:astral-consensus`, …) and by track (`track:A`, `track:B`) so contributors can self-select by interest and time commitment.
+- Given `native/` will eventually need very different CI (QEMU boot tests, kernel-specific tooling) than `consensus/`/`shell/`/`nebula/` (standard app/web CI), keep them decoupled enough to split into a separate repo later without much pain — don't let them share build tooling more than necessary.
+- A CI workflow (`.github/workflows/`) is deliberately not scaffolded yet — add it once `consensus/` or `shell/` has real code to lint/test against, rather than shipping an empty pipeline.
 
 ## 10. Phased Requirements
 
@@ -180,20 +180,20 @@ PyxisOS/
 ### 🌒 Phase II — Waxing Crescent: **Stellar Canvas** — *Track A now, Track B later*
 **Objective:** Custom graphical desktop environment — compositor, window manager, theming, widgets, animation.
 
-- **Requirements:** compositor/window manager (Track A: Wayland/wlroots on Linux; Track B: native once Lunar Core has a GPU/framebuffer path) · theme engine (color/type/motion tokens) · widget toolkit for shell + third-party surfaces · compositor-level animation framework · developer/inspector mode · a shell/launcher built around Council + Automation entry points rather than a traditional taskbar.
-- **Acceptance criteria:** a running desktop session where a user launches apps, invokes the Council via a global shortcut, and sees live automation status.
+- **Requirements:** compositor/window manager (Track A: Wayland/wlroots on Linux; Track B: native once Lunar Core has a GPU/framebuffer path) · theme engine (color/type/motion tokens) · widget toolkit for shell + third-party surfaces · compositor-level animation framework · developer/inspector mode · a shell/launcher built around Consensus Engine + Automation entry points rather than a traditional taskbar.
+- **Acceptance criteria:** a running desktop session where a user launches apps, invokes the Consensus Engine via a global shortcut, and sees live automation status.
 - **Tech notes:** wlroots + Rust/C for a "real OS shell" feel, or Tauri/Electron if raw prototyping speed matters more early on — worth deciding explicitly rather than defaulting.
 - **Dependencies:** Track A version has none; native version depends on Phase I graphics support.
 - **Effort:** a Track A prototype is **weeks to ~2 months**; a polished DE is a sustained, ongoing effort.
 - **Risks:** compositor/driver bugs are notoriously time-consuming to debug; scope "polish" explicitly or it never ends.
 
-### 🌓 Phase III — First Quarter: **Astral Council** — *Track A*
+### 🌓 Phase III — First Quarter: **Astral Consensus Engine** — *Track A*
 **Objective:** Native multi-agent layer — specialized agents independently analyze requests, converge on a consensus response.
 
 This is the heart of what makes PyxisOS different, and the fastest phase to get real evidence on — prioritize it.
 
-- **Requirements:** a defined agent contract (input: request + context; output: opinion + confidence + rationale) · the eight named agents (Research, Security, Developer, Planner, Creative, Logic, Ethics, Statistical) implemented as pluggable experts — differently-prompted models, fine-tunes, or rules engines · a Consensus Engine (start with a simple "judge" pass that reviews all agent outputs and writes the final answer — fastest to ship and evaluate — then iterate toward voting/debate mechanisms) · a transparency UI showing each agent's independent opinion, not just the synthesis · a conflict-resolution policy for strong disagreement (escalate to user, flag low confidence) · a routing layer so routine requests don't invoke all eight agents (cost/latency control).
-- **Acceptance criteria:** on a fixed benchmark set, the Council produces synthesized answers with visible per-agent rationale, scored against a single-agent baseline on a defined rubric.
+- **Requirements:** a defined agent contract (input: request + context; output: opinion + confidence + rationale) · the eight named agents (Research, Security, Developer, Planner, Creative, Logic, Ethics, Statistical) implemented as pluggable experts — differently-prompted models, fine-tunes, or rules engines · a Decision Arbitration Layer (start with a simple "judge" pass that reviews all agent outputs and writes the final answer — fastest to ship and evaluate — then iterate toward voting/debate mechanisms) · a transparency UI showing each agent's independent opinion, not just the synthesis · a conflict-resolution policy for strong disagreement (escalate to user, flag low confidence) · a routing layer so routine requests don't invoke all eight agents (cost/latency control).
+- **Acceptance criteria:** on a fixed benchmark set, the Consensus Engine produces synthesized answers with visible per-agent rationale, scored against a single-agent baseline on a defined rubric.
 - **Tech notes:** the fastest path to v1 is API calls with distinct system prompts per agent persona rather than eight separate models — parallelize/cache calls to manage latency.
 - **Dependencies:** none blocking — can be prototyped as a CLI before any shell integration exists.
 - **Effort:** a 2–3-agent MVP with simple consensus is **achievable in weeks**; the full 8-agent system with UI is **a couple of months**.
@@ -205,14 +205,14 @@ This is the heart of what makes PyxisOS different, and the fastest phase to get 
 - **Requirements:** a Master Agent/orchestrator decomposing goals into task graphs · a planner with explicit approval checkpoints for risky actions (deletion, network calls, purchases) · a task scheduler + async background executors · a persisted, resumable, inspectable workflow graph · long-term memory with user-visible view/delete controls · an event system for triggers (file changes, schedule, notifications).
 - **Acceptance criteria:** a request like "organize my downloads folder by file type weekly" gets scheduled, executed, and reported on, with an approval gate before any destructive step.
 - **Tech notes:** look to existing DAG-based orchestration patterns rather than inventing task-graph semantics from scratch.
-- **Dependencies:** builds on Astral Council (Phase III) for planning intelligence.
+- **Dependencies:** builds on Astral Consensus Engine (Phase III) for planning intelligence.
 - **Effort:** a core scheduler+executor MVP is **a few weeks**; safe, trustworthy automation with good approval UX is **months of ongoing hardening**, not a one-time milestone.
 - **Risks:** this is the highest-trust-risk surface in the whole project — an "autonomous" feature that takes real actions on real files/accounts. Default to confirm-before-destructive and full audit logging from the very first version, not as a later hardening pass.
 
 ### 🌕 Phase V — Full Moon: **Orbital Intelligence** — *Track A, ongoing*
 **Objective:** Unify subsystems into an adaptive environment — layouts, resource allocation, and automation strategy adapt to the user, with oversight retained.
 
-- **Requirements:** opt-in, local-first usage telemetry · adaptive layout *suggestions* (not silently auto-applied, at least initially) · predictive app/resource pre-loading · search spanning files, conversations, and automation history · shared context across Council/Automation/Shell.
+- **Requirements:** opt-in, local-first usage telemetry · adaptive layout *suggestions* (not silently auto-applied, at least initially) · predictive app/resource pre-loading · search spanning files, conversations, and automation history · shared context across Consensus Engine/Automation/Shell.
 - **Acceptance criteria:** measurable reduction in time-to-task for repeat workflows in a user study.
 - **Dependencies:** needs real usage data from Phases III/IV — sequence this *after* those mature, not in parallel from day one.
 - **Effort:** genuinely ongoing/iterative rather than a single milestone.
@@ -221,7 +221,7 @@ This is the heart of what makes PyxisOS different, and the fastest phase to get 
 ### 🌖 Phase VI — Waning Gibbous: **Aegis Hypervisor** — *Track A stopgap now, Track B long-term*
 **Objective:** Hypervisor-based isolation, secure execution, and defensive hardening.
 
-- **Requirements:** isolated VM/container workloads · memory protection between guests · a sandboxing policy engine (what can an agent/automation task touch?) · secure boot · encrypted storage for images and user data · policy-based access control — nicely, the **Security agent from Astral Council is a natural author/reviewer of these policies**, worth designing for explicitly.
+- **Requirements:** isolated VM/container workloads · memory protection between guests · a sandboxing policy engine (what can an agent/automation task touch?) · secure boot · encrypted storage for images and user data · policy-based access control — nicely, the **Security agent from Astral Consensus Engine is a natural author/reviewer of these policies**, worth designing for explicitly.
 - **Acceptance criteria:** passes a defined isolation test suite (no cross-VM memory leakage; sandboxed processes can't escape declared policy).
 - **Tech notes:** strongly recommend Track A's actual sandboxing need (containing what an autonomous agent can do) rides on **KVM/Firecracker** — battle-tested, used in production elsewhere — rather than a hand-rolled hypervisor. Reserve a genuinely custom Type-1 hypervisor for Track B, once Lunar Core exists and dedicated security engineering is available.
 - **Dependencies:** native version depends on Lunar Core; the Track A sandboxing baseline doesn't, and should ship much earlier.
@@ -255,8 +255,8 @@ This is the heart of what makes PyxisOS different, and the fastest phase to get 
 
 - **Security & privacy:** a permission model for what agents/automation can touch by default, full audit logging, clear data retention/deletion controls, opt-in telemetry only.
 - **Observability:** structured logs/traces for agent decisions and automation runs — this doubles as both a debugging tool and the transparency data the research paper needs.
-- **Testing:** unit tests per module; consensus stability tests for the Council against a fixed prompt set; QEMU-based boot/regression CI once `native/` has content; fuzz testing anywhere untrusted input is parsed (filesystem, network) ahead of Aegis.
-- **Documentation:** architecture docs, a contributor guide, an "adding a new Council agent" guide, and ADRs (architecture decision records) for the big forks-in-the-road like build-vs-adopt on the kernel.
+- **Testing:** unit tests per module; consensus stability tests for the Consensus Engine against a fixed prompt set; QEMU-based boot/regression CI once `native/` has content; fuzz testing anywhere untrusted input is parsed (filesystem, network) ahead of Aegis.
+- **Documentation:** architecture docs, a contributor guide, an "adding a new Consensus agent" guide, and ADRs (architecture decision records) for the big forks-in-the-road like build-vs-adopt on the kernel.
 - **Accessibility:** keyboard navigation and screen-reader support for Stellar Canvas, called out explicitly so it doesn't get dropped under deadline pressure.
 
 ## 12. Risks & Mitigations (Project-Level)
@@ -265,7 +265,7 @@ This is the heart of what makes PyxisOS different, and the fastest phase to get 
 |---|---|
 | Scope collapse ("boil the ocean") | Two-track strategy + explicit non-goals (Section 4). |
 | Solo/small-team burnout on a multi-year systems effort | Ship Track A wins early — sustains motivation and attracts contributors. |
-| LLM cost/latency for the Council | Agent routing (not all 8 every time), caching, cheaper models for low-stakes agents. |
+| LLM cost/latency for the Consensus Engine | Agent routing (not all 8 every time), caching, cheaper models for low-stakes agents. |
 | Security incidents from autonomous automation | Default confirm-before-destructive, full audit log, graduate to auto-execute only after a track record on low-risk actions. |
 | Steep onboarding curve for kernel/hypervisor work | Strong docs, "good first issue" labels, consider a separate community channel for Track B specialists. |
 | Naming/trademark | Worth a quick trademark/namespace check on "Pyxis"/"PyxisOS" before any wider public launch — not urgent now. |
@@ -276,7 +276,7 @@ This is the heart of what makes PyxisOS different, and the fastest phase to get 
 
 | Milestone | Track | Rough timeframe |
 |---|---|---|
-| Astral Council MVP (2–3 agents, CLI) | A | Month 1–2 |
+| Astral Consensus Engine MVP (2–3 agents, CLI) | A | Month 1–2 |
 | Aegis sandboxing via KVM/Firecracker | A | Month 2–4 |
 | Stellar Canvas prototype shell (Linux-based) | A | Month 2–4 |
 | Celestial Automation MVP w/ approval gates | A | Month 3–5 |
@@ -296,7 +296,7 @@ These are the things worth resolving deliberately rather than by default:
 2. **Is Track B an active, staffed goal for v1, or a stated long-term north star** mentioned in docs but not yet resourced? (This changes almost everything else about sequencing.)
 3. **Primary near-term objective** — research paper, usable product, portfolio/learning project, or genuinely all three? Affects what "done" means for Phase III especially.
 4. **Team model** — solo, open community, or a funded effort? Directly rescales every estimate in Section 13.
-5. **LLM backend for Council agents** — hosted API (fast to start, ongoing cost/dependency) vs. local/open-weight models (more autonomous and private, more setup work)?
+5. **LLM backend for Consensus agents** — hosted API (fast to start, ongoing cost/dependency) vs. local/open-weight models (more autonomous and private, more setup work)?
 
 ## 15. Appendix A — Codename Glossary
 
@@ -304,7 +304,7 @@ These are the things worth resolving deliberately rather than by default:
 |---|---|---|---|
 | Lunar Core | I | B | The kernel |
 | Stellar Canvas | II | A → B | The desktop environment |
-| Astral Council | III | A | Multi-agent consensus |
+| Astral Consensus Engine | III | A | Multi-agent consensus |
 | Celestial Automation | IV | A | Autonomous workflows |
 | Orbital Intelligence | V | A | Adaptive, learning UX |
 | Aegis Hypervisor | VI | A (stopgap) → B | Isolation & security |
