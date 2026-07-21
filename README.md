@@ -1,67 +1,133 @@
 # PyxisOS
 
-**An autonomous, AI-native operating system designed to coordinate intent, reason via multi-agent consensus, and execute workflows securely.**
+![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)
+![Status](https://img.shields.io/badge/status-early--stage-orange.svg)
+![Target](https://img.shields.io/badge/target-x86__64-lightgrey.svg)
 
-> User → Astral Consensus Engine → Celestial Automation → Operating System → Hardware
+**An operating system built from scratch — bootloader to kernel to desktop — as a deliberate deep-systems learning project.**
 
-PyxisOS reimagines the OS as an intent-coordinator, not just a resource manager: a native multi-agent "Consensus Engine" reasons about what you're trying to do, an automation engine executes multi-step work on your behalf with your oversight, and — longer-term — a purpose-built kernel and hypervisor secure all of it.
+PyxisOS is not built on top of an existing kernel or hypervisor. Every layer is written by hand: a NASM bootloader, a Rust kernel, and everything above it, for x86_64, starting from BIOS/legacy boot.
 
-**Status:** early development. Architecture and scope are actively being defined — see [`docs/PRD.md`](docs/PRD.md) for the full plan.
+---
 
-## Two tracks
+## Why build from scratch?
 
-Building a kernel, a hypervisor, and a 3D engine from scratch is, individually, a multi-year systems effort — comparable in scope to Linux, Xen, and a game engine. So PyxisOS splits into two tracks that run in parallel rather than one long linear roadmap:
+Two paths were on the table for this project:
 
-- **Track A — PyxisOS Shell.** The Astral Consensus Engine, automation engine, desktop shell, and spatial (3D) prototype — built on a proven Linux/KVM base. This is where the novelty lives, ships in weeks-to-months, and is where most contributions should start.
-- **Track B — PyxisOS Native.** A from-scratch kernel, hypervisor, and native spatial engine — a long-horizon systems-research effort for contributors who want to work at that level.
+- **Track A** — an AI-orchestration layer on top of an existing Linux/KVM stack. Faster to ship, but most of the actual OS internals stay hidden behind someone else's implementation.
+- **Track B** — a kernel and hypervisor built entirely from scratch. Slower, harder, and the one this project commits to, because the point isn't the fastest path to a working demo — it's actually understanding every layer of the machine.
 
-Full reasoning in [`docs/PRD.md`](docs/PRD.md), Section 5.
+**PyxisOS follows Track B.** Depth over speed, deliberately.
 
-## The phases
+---
 
-| | Phase | Codename | Track | What it is |
-|---|---|---|---|---|
-| 🌑 | I — New Moon | Lunar Core | B | The kernel |
-| 🌒 | II — Waxing Crescent | Stellar Canvas | A → B | The desktop environment |
-| 🌓 | III — First Quarter | Astral Consensus Engine | A | Multi-agent consensus |
-| 🌔 | IV — Waxing Gibbous | Celestial Automation | A | Autonomous workflows |
-| 🌕 | V — Full Moon | Orbital Intelligence | A | Adaptive, learning UX |
-| 🌖 | VI — Waning Gibbous | Aegis Hypervisor | A → B | Isolation & security |
-| 🌗 | VII — Last Quarter | Nebula Engine | A → B | Spatial / 3D computing |
-| 🌘 | VIII — Waning Crescent | Constellation Network | A | Multi-device federation |
+## Current Status
 
-Full detail on every phase — requirements, acceptance criteria, effort estimates, risks — lives in [`docs/PRD.md`](docs/PRD.md), Section 10.
+🚧 **Early stage.** This is a curriculum-driven build, not a race to a 1.0.
 
-## What's actually running right now
 
-Most of this repo is scaffolding and specification — that's normal for a project at this stage. One thing is real and runnable today:
+|
+ Milestone 
+|
+ Status 
+|
+|
+---
+|
+---
+|
+|
+ Phase 1 — Fundamentals 
+|
+ ✅ Complete 
+|
+|
+ Phase 2 — Bootloader (Lesson 1: MBR bootloader in NASM) 
+|
+ ✅ Complete 
+|
+|
+ Phase 2 — Bootloader (remaining lessons) 
+|
+ 🔜 In progress 
+|
+|
+ Kernel core 
+|
+ ⬜ Not started 
+|
+|
+ Memory management 
+|
+ ⬜ Not started 
+|
 
-- **[`nebula/prototype/index.html`](nebula/prototype/index.html)** — an early Nebula Engine (Phase VII) demo. Open it in a browser: drag to orbit, scroll to zoom, and (with a connected headset, served over HTTPS or `localhost`) hit "Enter VR."
+---
 
-## Repository layout
+## Roadmap
 
+The full curriculum is broken into detailed phases; the major milestones it builds toward are:
+
+Bootloader → Kernel Core → Memory Management → Drivers/IO
+→ Desktop Environment → AI Integration → Distributed Systems
+→ Compiler Design
+
+
+Each milestone is treated as a first-class learning phase — implemented, tested in an emulator, and documented — before moving to the next, rather than stubbing pieces out to reach a demo faster.
+
+---
+
+## Architecture & Toolchain
+
+┌─────────────────────────────────────────┐
+│ PyxisOS (x86_64) │
+├─────────────────────────────────────────┤
+│ Bootloader NASM (BIOS/legacy) │
+│ Kernel Rust │
+│ Emulation QEMU │
+│ Debugging GDB (-s -S) │
+└─────────────────────────────────────────┘
+
+
+| Component | Choice |
+|---|---|
+| Target architecture | x86_64 |
+| Bootloader | NASM, BIOS/legacy boot (initial phase) |
+| Kernel language | Rust |
+| Emulator | QEMU |
+| Debugger | GDB — launched with `-s -S`; `set architecture i8086` for real-mode bootloader debugging |
+| Build | Make (`run`, `debug`, `clean` targets) |
+| Editor | VS Code (rust-analyzer, hex editor, NASM syntax highlighting) |
+| Dev environment | Linux / WSL2 |
+
+---
+
+## Getting Started
+
+**Prerequisites:** NASM, QEMU, GDB, a Rust toolchain, Make.
+
+```bash
+make run      # assemble/build and boot in QEMU
+make debug    # boot with a GDB stub attached (-s -S)
+make clean    # clean build artifacts
 ```
-consensus/       Astral Consensus Engine — multi-agent consensus (Phase III)
-automation/      Celestial Automation — workflow engine (Phase IV)
-shell/           Stellar Canvas — desktop environment (Phase II)
-intelligence/    Orbital Intelligence — adaptive UX (Phase V)
-nebula/          Nebula Engine — spatial/3D computing (Phase VII)
-network/         Constellation Network — device federation (Phase VIII)
-native/          Track B: Lunar Core (kernel) + Aegis (hypervisor)
-research/        Evaluation harnesses & benchmarks
-docs/            PRD, architecture notes, research paper drafts
-```
 
-Every module folder has its own `README.md` explaining scope, status, and where to look in the PRD.
+---
 
-## Getting started
+## Repository Conventions
 
-There's no build yet beyond the Nebula prototype — the project is at the "define the architecture, start on Track A" stage. The best way in:
+- **Branches:** `track-b/<description>`
+- **Commits:** [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `docs:`, …)
+- **Documentation:** architecture notes and design decisions live in `docs/architecture/`
 
-1. Read [`docs/PRD.md`](docs/PRD.md) for the full plan, especially Section 14 (Open Decisions) — some of the highest-leverage questions (build-vs-adopt on the kernel, LLM backend for the Consensus Engine) aren't resolved yet.
-2. Check open issues labeled `good-first-issue`, or pick by track: `track:A` for the AI/shell layer, `track:B` for kernel/hypervisor/native work.
-3. See [`CONTRIBUTING.md`](CONTRIBUTING.md) for branch/PR conventions and how the two tracks are organized.
+---
+
+## Philosophy
+
+This project is built methodically, one fully-understood layer at a time. No component is treated as a black box just to move faster — if that means the timeline is measured in phases rather than weeks, that's the deliberate tradeoff being made.
+
+---
 
 ## License
 
-Apache-2.0 — see [`LICENSE`](LICENSE).
+Apache License 2.0 — see [`LICENSE`](./LICENSE).
