@@ -1,0 +1,12 @@
+NAME="PyxisOS"
+PRETTY_NAME="PyxisOS"
+ID=pyxisos
+VERSION="0.1.0"
+VERSION_CODENAME="Lunar-Pyxis"
+VARIANT="Beta"
+BUILD_ID="rolling"
+ANSI_COLOR="38;2;220;40;80"
+HOME_URL="https://github.com/obstinix/PyxisOS"
+DOCUMENTATION_URL="https://github.com/obstinix/PyxisOS"
+SUPPORT_URL="https://github.com/obstinix/PyxisOS/issues"
+BUG_REPORT_URL="https://github.com/obstinix/PyxisOS/issues"

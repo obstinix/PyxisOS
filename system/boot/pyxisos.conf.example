@@ -1,0 +1,5 @@
+title  PyxisOS
+linux  /vmlinuz-linux
+initrd /intel-ucode.img
+initrd /initramfs-linux.img
+options root=UUID=00955744-524c-403a-99f2-69818444cd30 rw quiet

@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+BOLD='\033[1m'
+RED='\033[38;2;220;40;80m'
+DIM='\033[2m'
+RESET='\033[0m'
+
+if command -v figlet >/dev/null 2>&1; then
+    echo -e "${RED}"
+    figlet -f slant "PYXISOS"
+    echo -e "${RESET}"
+else
+    cat << "EOF"
+    ____             _      ____  _____
+   / __ \__  ___  __(_)____/ __ \/ ___/
+  / /_/ / / / / |/_/ / ___/ / / /\__ \ 
+ / ____/ /_/ />  </ (__  ) /_/ /___/ / 
+/_/    \__, /_/|_/_/____/\____//____/  
+      /____/                           
+EOF
+fi
+
+echo -e "${BOLD}LUNAR-PYXIS // BETA${RESET}"
+echo -e "${DIM}VERSION 0.1.0${RESET}"
+echo
