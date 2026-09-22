@@ -1,5 +1,6 @@
 # Rust build artifacts
 target/
+Cargo.lock.orig
 
 # IDE / Editor configurations
 .vscode/
@@ -12,7 +13,7 @@ target/
 Thumbs.db
 desktop.ini
 
-# Build artifacts
+# Build artifacts and binaries
 *.o
 *.obj
 *.exe
@@ -21,11 +22,29 @@ desktop.ini
 *.dylib
 *.bin
 *.iso
+*.img
+*.qcow2
+*.vmdk
 
 # Node.js dependency and build directories
 node_modules/
 dist/
-consensus/.env
 consensus/dist/
 consensus/node_modules/
 
+# Secrets, credentials, and environment files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+id_rsa
+id_ed25519
+
+# System dumps and backups
+/etc/
+/boot/
+/var/
+*.dump
+*.log
