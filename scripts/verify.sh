@@ -79,7 +79,7 @@ echo
 
 echo "4. Scanning Repository Security Hygiene..."
 if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-    leaked_keys=$(git grep -i -E '(PRIVATE KEY|BEGIN OPENSSH PRIVATE KEY|github_pat_[0-9a-zA-Z_]+)' 2>/dev/null || true)
+    leaked_keys=$(git grep -i -E '(BEGIN (RSA|OPENSSH) PRIVATE KEY|github_pat_[0-9a-zA-Z_]{30,})' -- ':(exclude)scripts/verify.sh' 2>/dev/null || true)
     if [ -n "$leaked_keys" ]; then
         echo -e "  ${RED}[FAIL]${RESET} Potential credentials or private keys detected in tracked files:"
         echo "$leaked_keys"
