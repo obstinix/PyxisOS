@@ -48,7 +48,7 @@ id_ed25519
 
 # System dumps and backups
 /etc/
-/boot/
 /var/
+!boot/
 *.dump
 *.log
