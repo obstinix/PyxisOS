@@ -8,9 +8,3 @@ edition = "2021"
 [[bin]]
 name = "lunar-core"
 path = "src/main.rs"
-
-[profile.release]
-panic = "abort"
-
-[profile.dev]
-panic = "abort"

@@ -4,3 +4,10 @@ members = [
     "lunar-core",
     "aegis",
 ]
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+
