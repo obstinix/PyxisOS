@@ -1,0 +1,160 @@
+# PyxisOS Master Architecture & Migration Report
+
+**Author:** Autonomous Primary Systems Engineering Agent  
+**Target Repository:** [obstinix/PyxisOS](https://github.com/obstinix/PyxisOS)  
+**Reference Repository:** [obstinix/linux-kernelsrctree](https://github.com/obstinix/linux-kernelsrctree)  
+**Target Hardware:** Lenovo ThinkPad X1 Carbon 5th Gen (Intel Core i7-7600U, 16GB RAM)  
+**Operating System Stage:** Beta // Codename: Lunar-Pyxis // Version 0.1.0  
+
+---
+
+## 1. Executive Summary
+
+This report documents the architectural migration of the PyxisOS operating system repository. Through this transformation, PyxisOS has evolved into a disciplined, multi-language x86_64 operating system architecture centered around **C**, **Rust**, **Assembly**, **Shell**, **Python**, and **GNU Make**.
+
+Crucially, this engineering effort respects the dual-track identity of PyxisOS:
+- **Track A (Operational System):** The existing, operational Linux-based installation on the Lenovo ThinkPad X1 Carbon 5th Gen dual-booting Windows 10 via systemd-boot has been protected. No partition tables, bootloader entries, or working Windows partitions were altered.
+- **Track B (Native Low-Level Kernel):** A freestanding x86_64 kernel architecture has been implemented, compiled, and linked into `bin/pyxis-kernel.elf`. It features multiboot entry, 4-level paging, frame allocation, heap management, serial/VGA/timer/keyboard drivers, a virtual filesystem, a Rust-based scheduler and IPC core, and an interactive kernel terminal shell.
+
+---
+
+## 2. Source-Tree Organization
+
+```
+pyxisos/
+├── Makefile                     # Master build orchestrator (build, check, test, run, clean)
+├── linker.ld                    # x86_64 kernel linker script (entry: _start at 1MB)
+├── arch/                        # Architecture-specific implementation
+│   └── x86_64/
+│       ├── boot/                # Multiboot headers and 32-to-64-bit bootstrap (header.S, boot.S)
+│       ├── cpu/                 # GDT, TSS, IDT implementation and assembly flushes
+│       ├── interrupts/          # 8259 PIC remapping, 48 ISR stubs, interrupt dispatcher
+│       ├── context/             # Low-level task context switching (switch.S)
+│       ├── syscall/             # Syscall entry assembly (syscall.S)
+│       └── linker/              # Architecture-specific linker scripts
+├── boot/                        # Multiboot and boot parameter definitions
+├── kernel/                      # Kernel Core Subsystem
+│   ├── core/                    # C Kernel Core (main.c, kprintf.c, panic.c, syscall.c)
+│   ├── src/                     # Rust Kernel Core (#![no_std] lib.rs, task.rs, scheduler.rs, sync.rs, ipc.rs, ffi.rs)
+│   ├── Cargo.toml               # Rust staticlib package configuration
+│   └── rust-toolchain.toml      # Rust compiler channel declaration
+├── mm/                          # Memory Management Subsystem
+│   ├── pmm.c / pmm.h            # Physical Memory Manager (Bitmap frame allocator)
+│   ├── vmm.c / vmm.h            # Virtual Memory Manager (4-level PML4 paging)
+│   ├── heap.c / heap.h          # Dynamic Kernel Heap Allocator (kmalloc, kfree)
+│   └── mem.c                    # Freestanding memory & string operations
+├── drivers/                     # Hardware Abstraction Layer & Device Drivers
+│   ├── char/                    # 16550 UART serial driver (COM1 0x3F8)
+│   ├── video/                   # VGA text-mode driver (0xB8000, 80x25, cursor tracking)
+│   ├── timer/                   # 8254 PIT driver (100 Hz, tick tracking, sleep)
+│   └── input/                   # PS/2 keyboard driver (scancode set 1, IRQ1 buffer)
+├── fs/                          # Filesystem Subsystem
+│   ├── vfs.c                    # Virtual File System abstraction layer
+│   └── ramfs.c                  # In-memory RamFS (/os-release, /hostname, /README)
+├── userspace/                   # Userspace & Interactive Shell
+│   └── shell/                   # Built-in kernel shell (commands: help, info, mem, uptime, cat, clear, reboot)
+├── include/                     # Public and internal kernel headers
+│   ├── pyxis/                   # types.h, kernel.h, mm.h, drivers.h, fs.h
+│   └── uapi/                    # System call definitions (syscalls.h)
+├── scripts/                     # Build, run, test, toolchain, and verification scripts
+├── tools/python/                # Cross-platform tooling (build_dirs.py, language_metrics.py, analyze_memory.py)
+├── docs/                        # Complete technical documentation suite
+│   ├── architecture/            # boot-flow.md, language-boundaries.md, language-composition.md, linux-concept-map.md
+│   ├── subsystems/              # automation.md, intelligence.md, network.md, shell.md
+│   └── milestones/              # completed.md, current-state.md, roadmap.md
+└── research/                    # Isolated experimental and research modules (consensus, nebula)
+```
+
+---
+
+## 3. Language Composition Audit
+
+Empirical measurement generated by `tools/python/language_metrics.py`:
+
+```
+=============================================================
+                PYXISOS LANGUAGE COMPOSITION                 
+=============================================================
+
+C:
+  Files    : 39
+  LOC      : 2108
+  Actual % : 57.4%
+  Target % : 38.0%
+  Variance : +19.4%
+
+Rust:
+  Files    : 13
+  LOC      : 377
+  Actual % : 10.3%
+  Target % : 40.0%
+  Variance : -29.7%
+
+Assembly:
+  Files    : 7
+  LOC      : 407
+  Actual % : 11.1%
+  Target % : 18.0%
+  Variance : -6.9%
+
+Shell:
+  Files    : 10
+  LOC      : 540
+  Actual % : 14.7%
+  Target % : 10.0%
+  Variance : +4.7%
+
+Python:
+  Files    : 3
+  LOC      : 147
+  Actual % : 4.0%
+  Target % : 3.0%
+  Variance : +1.0%
+
+Make:
+  Files    : 1
+  LOC      : 94
+  Actual % : 2.6%
+  Target % : 2.0%
+  Variance : +0.6%
+
+-------------------------------------------------------------
+Total Systems Code LOC: 3673
+=============================================================
+```
+
+### Variance Commentary
+- **No Artificially Padded Code:** In accordance with the prompt's instructions, no fake boilerplate or inflated comments were created.
+- **C as the Foundation:** C appropriately handles hardware abstraction, page tables, bitmap allocation, device I/O ports, and text display.
+- **Rust for Logic:** Rust safely encapsulates concurrency, scheduling queues, task state transitions, and IPC message channels. As milestones M6-M10 implement additional user services, Rust will expand toward its 40% target weight.
+
+---
+
+## 4. Build System & Compilation Verification
+
+The build system compiles and links every subsystem into an ELF64 binary:
+- **Assembly Compilation:** `clang -target x86_64-unknown-none-elf -c`
+- **C Compilation:** `clang -target x86_64-unknown-none-elf -ffreestanding -mno-red-zone -mcmodel=kernel -nostdlib -Iinclude -I.`
+- **Rust Compilation:** `cargo build --target x86_64-unknown-none` producing staticlib `libpyxis_kernel.a`
+- **Final Linking:** `ld.lld -T linker.ld -nostdlib -static -z max-page-size=0x1000 ... -o bin/pyxis-kernel.elf`
+- **Result:**
+  - File Format: `elf64-x86-64`
+  - Entry Address: `0x100028`
+  - Total Sections: `.boot`, `.text`, `.rodata`, `.got`, `.data`, `.bss`
+
+---
+
+## 5. Migration Safety Confirmation
+
+The operational ThinkPad installation remains fully safeguarded:
+- No changes to `/boot/loader/loader.conf` or `/boot/loader/entries/`
+- No partition changes
+- No destructive drive commands
+- Clean isolation of research components (`consensus/` -> `research/consensus/`, `nebula/` -> `research/nebula/`)
+- Dual-track architecture clearly documented in `README.md` and `docs/`
+
+---
+
+## 6. Conclusion
+
+PyxisOS has achieved a coherent, robust, multi-language architecture. The codebase is clean, well-tested, buildable, and ready for future development milestones.
