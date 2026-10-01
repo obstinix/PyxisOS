@@ -1,0 +1,20 @@
+[package]
+name = "pyxis-kernel"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "pyxis_kernel"
+crate-type = ["staticlib"]
+path = "src/lib.rs"
+
+[dependencies]
+
+[profile.dev]
+panic = "abort"
+opt-level = 2
+
+[profile.release]
+panic = "abort"
+opt-level = 3
+lto = false
