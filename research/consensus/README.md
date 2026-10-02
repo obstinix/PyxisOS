@@ -1,9 +1,15 @@
-# consensus/ — Astral Consensus Engine
+# Astral Consensus Engine (Phase III · Track A)
 
-**Phase III · Track A**
+The multi-agent consensus layer for PyxisOS. Each specialist agent (Research, Security, Logic, Developer, Planner, Creative, Ethics, Statistical) independently analyzes requests; the Decision Arbitration Layer synthesizes their input into a transparent answer with conflict detection.
 
-The multi-agent consensus layer. Each of the eight specialist agents (Research, Security, Developer, Planner, Creative, Logic, Ethics, Statistical) independently analyzes a request; the Decision Arbitration Layer synthesizes their input into one transparent answer.
+## Architecture & Implementation
 
-**Status:** implemented MVP — features Research, Security, and Logic agents, a single-pass Decision Arbitration Layer, and an execution CLI. Ready for expansion to other specialist agent roles. See `docs/PRD.md`, Section 10 (Phase III) for detail.
+The Astral Consensus Engine has been migrated from early TypeScript prototyping into **native Rust** located in [`native/consensus/`](../../native/consensus/).
 
-See `docs/PRD.md`, Section 10 (Phase III) for the full spec, and `research/` for the evaluation harness that should back any change here.
+- **Native Rust Crate:** `native/consensus`
+- **CLI Executable:** `cargo run --manifest-path native/consensus/Cargo.toml -- "query"`
+- **Specialist Agents:** `ResearchAgent`, `SecurityAgent`, `LogicAgent` in `native/consensus/src/agents/`
+- **Decision Arbitration Layer:** `native/consensus/src/arbitration.rs`
+- **Evaluation Suite:** Python research harness in [`research/eval/`](../eval/)
+
+See [`docs/PRD.md`](../../docs/PRD.md), Section 10 (Phase III) for full specifications.
