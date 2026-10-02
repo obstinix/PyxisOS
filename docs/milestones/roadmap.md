@@ -58,7 +58,7 @@ This roadmap documents the status of all past, present, and future PyxisOS subsy
 - `[PLANNED]` Aegis Type-1 hypervisor / security sandbox (`native/aegis`)
 
 ### 6. Autonomous Intelligence Layer
-- `[IN DEVELOPMENT]` Astral Consensus Engine multi-agent system (`consensus/`)
+- `[IN DEVELOPMENT]` Astral Consensus Engine native Rust implementation (`native/consensus/`)
 - `[IN DEVELOPMENT]` Specialized agents (Research, Security, Logic, Arbitration)
 - `[IN DEVELOPMENT]` Consensus benchmark and evaluation suite (`research/eval/`)
 - `[PLANNED]` Celestial Automation workflow engine (task DAG execution)

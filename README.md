@@ -247,24 +247,18 @@ PyxisOS/
 │   ├── onboarding/                    # Developer workstation setup guide
 │   └── research-paper/                # Academic paper outline
 │
-├── native/                            # Track B Rust workspace
+├── native/                            # Native Rust workspace
 │   ├── Cargo.toml
 │   ├── rust-toolchain.toml
 │   ├── aegis/                         # Type-1 hypervisor / security layer stub
+│   ├── consensus/                     # Astral Consensus Engine (Native Rust multi-agent system)
 │   └── lunar-core/                    # Custom Rust microkernel entrypoint & target spec
 │
-├── consensus/                         # Astral Consensus Engine (TypeScript multi-agent system)
-│   ├── package.json
-│   └── src/
-│
-├── nebula/                            # 3D spatial multitasking & parallax prototype
-│   ├── README.md
-│   └── prototype/
-│       └── index.html
-│
-├── research/                          # Consensus evaluation benchmarks and comparative results
-│   ├── eval/
-│   └── results/
+├── research/                          # Research benchmarks and prototypes
+│   ├── consensus/                     # Astral Consensus Engine specs & evaluation hooks
+│   ├── eval/                          # Python evaluation harness & LLM judge
+│   ├── nebula/                        # 3D spatial multitasking & parallax prototype
+│   └── results/                       # Empirical benchmarks & comparative results
 │
 └── tests/
     └── cli_test.sh                    # Automated test suite for Pyxis CLI

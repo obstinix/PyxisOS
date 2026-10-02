@@ -10,6 +10,8 @@ EXTENSIONS = {
     '.asm': 'Assembly',
     '.sh': 'Shell',
     '.py': 'Python',
+    '.ts': 'TypeScript',
+    '.tsx': 'TypeScript',
     'Makefile': 'Make',
 }
 
@@ -21,7 +23,7 @@ EXCLUDE_DIRS = {
     'node_modules',
     '.gemini',
     'scratch',
-    '.cargo'
+    '.cargo',
 }
 
 def analyze_repository(root_dir):
@@ -32,6 +34,7 @@ def analyze_repository(root_dir):
         'Shell': {'files': 0, 'loc': 0},
         'Python': {'files': 0, 'loc': 0},
         'Make': {'files': 0, 'loc': 0},
+        'TypeScript': {'files': 0, 'loc': 0},
     }
 
     for dirpath, dirnames, filenames in os.walk(root_dir):
@@ -71,9 +74,10 @@ def main():
         'Shell': 10.0,
         'Python': 3.0,
         'Make': 2.0,
+        'TypeScript': 0.0,
     }
 
-    for lang in ['C', 'Rust', 'Assembly', 'Shell', 'Python', 'Make']:
+    for lang in ['C', 'Rust', 'Assembly', 'Shell', 'Python', 'Make', 'TypeScript']:
         loc = stats[lang]['loc']
         pct = (loc / total_loc * 100.0) if total_loc > 0 else 0.0
         target = targets.get(lang, 0.0)
