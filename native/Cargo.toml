@@ -3,6 +3,7 @@ resolver = "2"
 members = [
     "lunar-core",
     "aegis",
+    "consensus",
 ]
 
 [profile.dev]

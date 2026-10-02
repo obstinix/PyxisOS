@@ -1,0 +1,15 @@
+[package]
+name = "consensus"
+version = "0.1.0"
+edition = "2021"
+description = "Astral Consensus Engine for PyxisOS (Phase III · Track A)"
+
+[[bin]]
+name = "consensus"
+path = "src/main.rs"
+
+[lib]
+name = "consensus"
+path = "src/lib.rs"
+
+[dependencies]
