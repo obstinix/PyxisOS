@@ -13,6 +13,10 @@ Cargo.lock.orig
 Thumbs.db
 desktop.ini
 
+# Python cache
+__pycache__/
+*.py[cod]
+
 # Build artifacts and binaries
 build/
 bin/

@@ -16,23 +16,17 @@ To execute the comparison run and populate this report, follow these steps:
    export ANTHROPIC_API_KEY="your-api-key"
    ```
 
-2. Compile the `consensus` package:
+2. Run the baseline evaluator:
    ```bash
-   cd consensus
-   npm run build
+   python research/eval/run_baseline.py
    ```
 
-3. Run the baseline evaluator:
+3. Run the consensus evaluator:
    ```bash
-   npx ts-node research/eval/run-baseline.ts
+   python research/eval/run_consensus.py
    ```
 
-4. Run the consensus evaluator:
+4. Run the scorer script to grade both outputs and generate the evaluation report:
    ```bash
-   npx ts-node research/eval/run-consensus.ts
-   ```
-
-5. Run the scorer script to grade both outputs and overwrite this document:
-   ```bash
-   npx ts-node research/eval/score.ts
+   python research/eval/score.py
    ```
