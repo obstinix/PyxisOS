@@ -1,7 +1,12 @@
-# intelligence/ — Orbital Intelligence
+# Orbital Intelligence — Adaptive System Optimization
 
-**Phase V · Track A, ongoing**
+**Phase 5 · Long-Term Research Track**
 
-The adaptive layer: opt-in local-first telemetry, adaptive layout suggestions, predictive resource allocation, and cross-agent shared context. Needs real usage data from `consensus/` and `automation/` first — don't start this before those exist.
+Orbital Intelligence investigates adaptive operating-system behavior: opt-in local-first telemetry, predictive resource scheduling, memory footprint optimization, and cross-agent context sharing.
 
-**Status:** not started; sequenced after Phases III/IV mature. See `docs/PRD.md`, Section 10 (Phase V).
+## Architectural Direction
+
+- **Telemetry & Metrics:** Hardware, thermal, cache, and scheduler metrics feeding local optimization heuristics.
+- **Resource Balancing:** Adaptive kernel resource tuning governed by Astral Consensus arbitration.
+- **Status:** Sequenced after Phase 3 (Astral Consensus) and Phase 4 (Aegis Isolation) mature.
+- See [`docs/PROJECT_VISION.md`](../PROJECT_VISION.md) and [`docs/ROADMAP.md`](../ROADMAP.md).
