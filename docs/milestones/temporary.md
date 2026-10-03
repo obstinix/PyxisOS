@@ -10,11 +10,11 @@ PyxisOS uses a deliberate two-track strategy to avoid stalling high-level UX and
 
 ```
 Track A (Current Functional Implementation)
-  Arch Linux Base -> Linux Kernel -> systemd-boot -> KDE Plasma/SDDM -> Pyxis CLI
+  Linux Operational Foundation -> Linux Kernel Substrate -> systemd-boot -> KDE Plasma/SDDM -> Pyxis CLI
   (Enables daily usability, hardware validation, and spatial UI experimentation)
 
 Track B (Long-Term Native Vision)
-  Custom Bootloader -> Lunar Core (Rust Microkernel) -> Aegis Hypervisor -> Native Spatial Desktop
+  Freestanding Bootstrap -> Lunar Core (Rust Microkernel) -> Aegis Isolation -> Native Spatial Compositor
   (From-scratch deep-systems engineering)
 ```
 
@@ -25,7 +25,7 @@ Track B (Long-Term Native Vision)
 The following components are operational and verified, but represent the **intermediate substrate**, not the final native state of PyxisOS:
 
 1. **PyxisOS 0.1.0 "Lunar-Pyxis" (Beta):**
-   - Built on an Arch Linux foundation to provide a modern, rolling-release userspace.
+   - Built on a Linux-based operational foundation to provide a modern, reliable userspace.
    - Provides full driver support for ThinkPad hardware (Wi-Fi, trackpoint, power management).
 
 2. **KDE Plasma 6 + SDDM:**
@@ -50,4 +50,4 @@ The following components are operational and verified, but represent the **inter
 
 - PyxisOS is not yet an independent Linux distribution built from independent source packages.
 - PyxisOS does not yet boot on a custom microkernel on physical hardware.
-- The spatial 3D window manager is currently an interactive prototype (`nebula/prototype/index.html`), not yet running natively as a Wayland compositor.
+- Nebula is currently an exploratory spatial research initiative (`research/nebula/`), not yet running natively as a standalone Wayland compositor.

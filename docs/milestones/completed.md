@@ -7,10 +7,10 @@ This document records the 17 verified milestones achieved on the PyxisOS physica
 ### Milestone 01: Base Linux Installation
 - **Status:** `[COMPLETED]`
 - **Description:** Successful installation of the base Linux operating system onto NVMe storage (`/dev/nvme0n1p7`).
-- **Base Distribution:** Arch Linux base substrate.
+- **Operational Substrate:** Linux-based operational foundation.
 - **Kernel Release:** Linux 7.1.11-arch1-1 (x86_64).
 
-### Milestone 02: PyxisOS Operating System Branding
+### Milestone 02: PyxisOS Operating System Identity
 - **Status:** `[COMPLETED]`
 - **Description:** Transformation of distribution identity to PyxisOS across system files.
 - **Version:** 0.1.0
