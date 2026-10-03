@@ -1,9 +1,22 @@
-# native/lunar-core/ — Lunar Core
+# native/lunar-core/ — Lunar Core Microkernel
 
-**Phase I · Track B**
+**Phase 2 · Track B · Native Systems Research**
 
-The foundational kernel: bootloader, memory management, process scheduler, interrupt handling, filesystem, terminal.
+Lunar Core is PyxisOS's experimental, freestanding `#![no_std]` Rust microkernel architecture.
 
-**Status:** scaffolded — see [`native/Cargo.toml`](../Cargo.toml) and [`.cargo/config.toml`](.cargo/config.toml). First open decision (PRD Section 14): build fully from scratch, or on top of an existing minimal microkernel (e.g. seL4) to de-risk the timeline? Resolve this before writing boot code.
+## Implementation Details
 
-**Target for v0.1:** boots to a shell prompt in QEMU, runs a "hello world" userspace binary, smoke tests pass in CI.
+- **Target Architecture:** `x86_64-pyxis.json` (freestanding x86_64, soft-float / no SSE, kernel code model, no red zone).
+- **Core Modules:**
+  - `src/arch/`: 64-bit GDT descriptor entries and IDT gate setups in safe Rust.
+  - `src/boot/`: Multiboot 1 and Multiboot 2 header tags and memory map parsers.
+  - `src/memory/`: 4-level PML4 paging table structures, page frame flags, and physical frame allocators.
+  - `src/logging.rs`: COM1 (0x3F8) 16550 UART serial logger for early kernel debugging.
+  - `src/panic.rs`: Freestanding `#[panic_handler]` reporting CPU architectural state over serial UART.
+- **Kernel Integration:** Interoperates with the freestanding C/Assembly kernel core (`arch/`, `kernel/`, `mm/`, `fs/`, `drivers/`).
+
+## Architectural Status
+
+- **Status:** Experimental prototype in active development.
+- **Target:** Boots to a serial/VGA prompt in QEMU, validates page tables and task context switches, and prepares for bare-metal testing on physical x86_64 hardware.
+- For the full system vision and roadmap, see [`docs/PROJECT_VISION.md`](../../docs/PROJECT_VISION.md) and [`docs/ROADMAP.md`](../../docs/ROADMAP.md).
