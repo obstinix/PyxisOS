@@ -1,6 +1,6 @@
 # System Architecture Overview
 
-This document describes the high-level architecture of PyxisOS, expanding on the core layers and boundaries defined in [PRD.md](file:///c:/ProjectsPP/Pyxis/files/PyxisOS-repo-scaffold/PyxisOS/docs/PRD.md).
+This document describes the high-level architecture of PyxisOS, expanding on the core layers and boundaries defined in [PRD.md](../PRD.md), [PROJECT_VISION.md](../PROJECT_VISION.md), and [ROADMAP.md](../ROADMAP.md).
 
 ## Core Architecture Layers
 
