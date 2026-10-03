@@ -1,10 +1,11 @@
-# nebula/ — Nebula Engine
+# Nebula — Spatial Interface Research
 
-**Phase VII · Track A prototype (this folder) → Track B native (Bevy/Rust, later)**
+**Track B · Spatial Computing & Window Management Research**
 
-Immersive spatial computing: 3D desktop, spatial windows, VR/AR support.
+Nebula is the architectural research track for PyxisOS's long-term human interface, investigating spatial computing, 3D multitasking surfaces, and window management.
 
-- `prototype/` — a working Three.js + WebXR starter (v0.1). Open `prototype/index.html` in a browser to see it. No build step, no dependencies beyond a CDN import.
-- Native (Bevy/Rust) integration is a Track B goal once Lunar Core exists and the desktop metaphor here is validated — not started.
+## Architectural Direction
 
-See `docs/PRD.md`, Section 10 (Phase VII) for the full reasoning, including why VR/XR tooling maturity is the reason the prototype is web-based first.
+- **Current Status:** Architectural research & design exploration.
+- **Implementation Strategy:** Future native interface research targets a low-level systems implementation (e.g., Rust / Wayland / wlroots / native graphics pipelines), operating directly against display and input subsystems.
+- **Production Boundary:** Nebula is an experimental research direction, not a production desktop compositor. In Track A, the operational desktop environment is provided by KDE Plasma / Wayland on physical x86_64 hardware.
