@@ -244,4 +244,3 @@ pub struct ConsensusResult {
     pub conflict_detected: bool,
     pub timestamp: u64,
 }
-
