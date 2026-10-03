@@ -1,7 +1,20 @@
-# shell/ — Stellar Canvas
+# PyxisOS Shell & Interface Architecture
 
-**Phase II · Track A (Linux-based) → Track B (native, once Lunar Core has graphics)**
+**Track A (Operational Shell) & Track B (Native Interface Research)**
 
-The desktop environment: compositor/window manager, theme engine, widget toolkit, and the shell/launcher built around Consensus Engine + Automation entry points rather than a traditional taskbar.
+PyxisOS organizes user and console interaction across distinct operational and research tiers:
 
-**Status:** not yet started. See `docs/PRD.md`, Section 10 (Phase II) for the wlroots-vs-Tauri/Electron tradeoff this module needs to settle first.
+## Subsystem Tiers
+
+1. **Operational Desktop Shell (Track A):**
+   - KDE Plasma 6 running on Wayland via SDDM on physical hardware.
+   - Provides daily multi-window productivity, display scaling, and hardware validation.
+   - Documented in [`desktop/kde/README.md`](../../desktop/kde/README.md).
+
+2. **Built-in Kernel Console Shell (`userspace/shell/`):**
+   - Freestanding C kernel shell executing over serial COM1 and VGA text buffer.
+   - Provides commands: `help`, `info`, `mem`, `uptime`, `cat`, `clear`, `reboot`.
+
+3. **Spatial Interface Research (Nebula):**
+   - Long-term research investigating 3D spatial window surfaces and native Wayland compositor integration.
+   - Documented in [`research/nebula/README.md`](../../research/nebula/README.md).
