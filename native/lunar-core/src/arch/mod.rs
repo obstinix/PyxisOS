@@ -122,11 +122,75 @@ impl ControlRegisters {
     pub const EFER_NO_EXECUTE_ENABLE: u64 = 1 << 11;
 }
 
+#[inline]
+pub unsafe fn hlt() {
+    core::arch::asm!("hlt", options(nomem, nostack));
+}
+
+#[inline]
+pub unsafe fn cli() {
+    core::arch::asm!("cli", options(nomem, nostack));
+}
+
+#[inline]
+pub unsafe fn sti() {
+    core::arch::asm!("sti", options(nomem, nostack));
+}
+
+#[inline]
+pub unsafe fn load_gdt(ptr: &GdtPointer) {
+    core::arch::asm!("lgdt [{}]", in(reg) ptr, options(readonly, nostack, preserves_flags));
+}
+
+#[inline]
+pub unsafe fn load_idt(ptr: &IdtPointer) {
+    core::arch::asm!("lidt [{}]", in(reg) ptr, options(readonly, nostack, preserves_flags));
+}
+
+#[inline]
+pub unsafe fn read_cr0() -> u64 {
+    let cr0: u64;
+    core::arch::asm!("mov {}, cr0", out(reg) cr0, options(nomem, nostack));
+    cr0
+}
+
+#[inline]
+pub unsafe fn read_cr2() -> u64 {
+    let cr2: u64;
+    core::arch::asm!("mov {}, cr2", out(reg) cr2, options(nomem, nostack));
+    cr2
+}
+
+#[inline]
+pub unsafe fn read_cr3() -> u64 {
+    let cr3: u64;
+    core::arch::asm!("mov {}, cr3", out(reg) cr3, options(nomem, nostack));
+    cr3
+}
+
+#[inline]
+pub unsafe fn write_cr3(val: u64) {
+    core::arch::asm!("mov cr3, {}", in(reg) val, options(nomem, nostack));
+}
+
+static EARLY_GDT: [GdtDescriptor; 3] = [
+    GdtDescriptor::null(),
+    GdtDescriptor::kernel_code64(),
+    GdtDescriptor::kernel_data64(),
+];
+
 /// X86_64 architecture implementation for Lunar Core.
 pub struct X86_64;
 
 impl CpuArch for X86_64 {
     fn init() {
-        // Architecture initialization: establish base CPU state
+        unsafe {
+            let gdt_ptr = GdtPointer {
+                limit: (core::mem::size_of_val(&EARLY_GDT) - 1) as u16,
+                base: EARLY_GDT.as_ptr() as u64,
+            };
+            load_gdt(&gdt_ptr);
+        }
     }
 }
+

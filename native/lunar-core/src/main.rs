@@ -18,20 +18,26 @@ use memory::BumpAllocator;
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
-    // 1. Initialize CPU Architecture state
-    arch::X86_64::init();
-
-    // 2. Initialize serial logging
+    // 1. Initialize serial logging
     logging::init();
-    logging::COM1.write_str("[Lunar-Core] PyxisOS native substrate active.\n");
+    serial_println!("[Lunar-Core] PyxisOS native substrate active.");
+
+    // 2. Initialize CPU Architecture state (GDT, descriptors)
+    arch::X86_64::init();
+    serial_println!("[Lunar-Core] CPU architecture state (GDT) established.");
 
     // 3. Inspect boot information
     let boot_info = BootInfo::empty();
-    let _ = boot_info.is_valid_multiboot();
+    serial_println!("[Lunar-Core] Boot magic verified: {}", boot_info.is_valid_multiboot());
 
     // 4. Initialize early memory allocator
     let mut _early_alloc = BumpAllocator::new(0x200000, 0x100000);
+    serial_println!("[Lunar-Core] Early memory bump allocator active (1MB heap).");
 
     // 5. Enter kernel halt loop
-    loop {}
+    loop {
+        unsafe {
+            arch::hlt();
+        }
+    }
 }
