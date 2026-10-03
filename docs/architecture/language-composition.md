@@ -9,7 +9,7 @@ This document records the empirical distribution of source code languages across
 | Language | Files | Lines of Code (LOC) | Actual Systems % | GitHub Byte % | Target Weight % | Primary Subsystem Responsibility |
 |---|---|---|---|---|---|---|
 | **C** | 39 | 2,108 | **38.2%** | **32.8%** | ~38.0% | Hardware Abstraction, Drivers (Serial, VGA, PIT, Keyboard), PMM, VMM, Kernel Heap, VFS, RamFS, CPU Tables |
-| **Rust** | 24 | 1,686 | **30.6%** | **28.7%** | ~40.0% | Kernel Core (`kernel/`), Lunar Core (`native/lunar-core/`), Aegis Hypervisor (`native/aegis/`), Astral Consensus Engine (`native/consensus/`) |
+| **Rust** | 24 | 1,686 | **30.6%** | **28.7%** | ~40.0% | Kernel Core (`kernel/`), Lunar Core (`native/lunar-core/`), Aegis Isolation Stub (`native/aegis/`), Astral Consensus Engine (`native/consensus/`) |
 | **Assembly (x86_64)** | 7 | 407 | **7.4%** | **4.1%** | ~18.0% | Multiboot Header, Bootloader Bootstrap, Long Mode Entry, GDT/IDT Flush, ISR Vector Stubs, Task Context Switch |
 | **Shell (Bash)** | 10 | 540 | **9.8%** | **13.9%** | ~10.0% | Build Orchestration, Toolchain Checks, CLI Installer, Verification Suite, QEMU/GDB Launchers |
 | **Python** | 6 | 677 | **12.3%** | **14.8%** | ~3.0% | Cross-Platform Build Directory Generation, ELF Memory Layout Analysis, Language Metrics Tooling, Evaluation Harness (`research/eval/`) |
