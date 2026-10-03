@@ -7,6 +7,7 @@
 pub mod agents;
 pub mod arbitration;
 pub mod audit;
+pub mod deterministic;
 pub mod provider;
 pub mod routing;
 pub mod types;
@@ -14,9 +15,16 @@ pub mod types;
 pub use agents::{Agent, LogicAgent, ResearchAgent, SecurityAgent};
 pub use arbitration::DecisionArbitrationLayer;
 pub use audit::AuditLogger;
+pub use deterministic::{
+    DeterministicAgent, DeterministicArbitrator, DeterministicLogicAgent,
+    DeterministicResourceAgent, DeterministicSecurityAgent,
+};
 pub use provider::{AnthropicProvider, LlmProvider, MockProvider};
 pub use routing::{DefaultRouter, Router};
-pub use types::{AgentContext, AgentOpinion, ArbitrationResult};
+pub use types::{
+    AgentContext, AgentOpinion, ArbitrationResult, ConsensusResult, Decision, DecisionOutcome,
+    Evidence, EvidenceCategory, Proposal, ProposalPriority, SubsystemTarget, Vote, VoteStance,
+};
 
 /// High-level coordinator for the Astral Consensus Engine.
 pub struct ConsensusEngine {
@@ -110,5 +118,104 @@ mod tests {
         let ctx = AgentContext::new("Test query");
         assert_eq!(ctx.query, "Test query");
         assert!(ctx.timestamp > 0);
+    }
+
+    #[test]
+    fn test_deterministic_safe_proposal_acceptance() {
+        let arbitrator = DeterministicArbitrator::new();
+        let mut arbitrator = arbitrator;
+        arbitrator.register_agent(Box::new(DeterministicSecurityAgent::new()));
+        arbitrator.register_agent(Box::new(DeterministicResourceAgent::new()));
+        arbitrator.register_agent(Box::new(DeterministicLogicAgent::new()));
+
+        let proposal = Proposal::new(
+            "prop-001",
+            "kernel-optimizer",
+            SubsystemTarget::Memory,
+            "compact_heap_arenas",
+            50,
+            ProposalPriority::Normal,
+        ).with_param("target_arena", "kernel_pool");
+
+        let decision = arbitrator.arbitrate_proposal(&proposal, &[]);
+        assert_eq!(decision.outcome, DecisionOutcome::Accepted);
+        assert!(decision.score >= 0.70);
+        assert!(!decision.conflict_flagged);
+        assert_eq!(decision.votes_approve, 3);
+        assert_eq!(decision.votes_reject, 0);
+    }
+
+    #[test]
+    fn test_deterministic_security_veto_unrestricted_root() {
+        let arbitrator = DeterministicArbitrator::with_default_agents();
+
+        let proposal = Proposal::new(
+            "prop-002",
+            "compromised-subagent",
+            SubsystemTarget::Security,
+            "escalate_unrestricted_root_privilege",
+            10,
+            ProposalPriority::High,
+        );
+
+        let decision = arbitrator.arbitrate_proposal(&proposal, &[]);
+        assert_eq!(decision.outcome, DecisionOutcome::Rejected);
+        assert!(decision.votes_reject >= 1);
+    }
+
+    #[test]
+    fn test_deterministic_resource_constraint_handling() {
+        let arbitrator = DeterministicArbitrator::with_default_agents();
+
+        let proposal = Proposal::new(
+            "prop-003",
+            "heavy-workload",
+            SubsystemTarget::Memory,
+            "allocate_buffer",
+            50,
+            ProposalPriority::Low,
+        );
+
+        let evidence = vec![Evidence::new(
+            "ev-001",
+            "prop-003",
+            "telemetry-daemon",
+            EvidenceCategory::ResourceConstraint,
+            "RAM utilization above 92%",
+            0.88,
+        )];
+
+        let decision = arbitrator.arbitrate_proposal(&proposal, &evidence);
+        // Under resource pressure on Low priority, ResourceAgent returns ConditionalApproval
+        assert_eq!(decision.outcome, DecisionOutcome::Accepted);
+        assert!(decision.score > 0.0);
+    }
+
+    #[test]
+    fn test_deterministic_batch_arbitration() {
+        let arbitrator = DeterministicArbitrator::with_default_agents();
+
+        let p1 = Proposal::new(
+            "p1",
+            "agent-a",
+            SubsystemTarget::Memory,
+            "defrag",
+            50,
+            ProposalPriority::Normal,
+        );
+        let p2 = Proposal::new(
+            "p2",
+            "agent-b",
+            SubsystemTarget::Kernel,
+            "raw_io_bypass",
+            0,
+            ProposalPriority::Critical,
+        );
+
+        let result = arbitrator.arbitrate_batch("batch-01", &[p1, p2], &[]);
+        assert_eq!(result.proposals.len(), 2);
+        assert_eq!(result.decisions.len(), 2);
+        assert_eq!(result.decisions[0].outcome, DecisionOutcome::Accepted);
+        assert_eq!(result.decisions[1].outcome, DecisionOutcome::Rejected);
     }
 }
