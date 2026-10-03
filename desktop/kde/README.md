@@ -11,6 +11,7 @@ This directory documents the desktop environment integration for PyxisOS.
 
 ## Planned Desktop Direction
 
-- Custom PyxisOS spatial desktop compositor
+- Custom PyxisOS native spatial desktop compositor (Track B)
 - Hyprland exploration environment
-- Three.js / WebXR 3D spatial multitasking prototype (see `nebula/`)
+- Spatial computing and 3D window interface research (see `research/nebula/`)
+
