@@ -3,19 +3,20 @@
 This document describes the planned process and scheduling subsystem for PyxisOS Native (Track B).
 
 > [!NOTE]
-> The scheduling subsystem is currently in the **Design Stage**. No implementation details are finalized, pending the resolution of Open Decision #1.
+> The scheduling and context switching subsystem is implemented via freestanding assembly in `arch/x86_64/context/switch.S`, PIT timer interrupts in `drivers/timer/pit.c`, and safe task management and round-robin scheduler traits in `kernel/src/scheduler.rs` and `kernel/src/task.rs`.
 
 ## Scope of Scheduling (PRD Phase I)
 
-According to the [PRD.md](file:///c:/ProjectsPP/Pyxis/files/PyxisOS-repo-scaffold/PyxisOS/docs/PRD.md), the process scheduler must support:
-- Process Control Block (PCB) or thread state tracking.
-- Preemptive execution scheduling (e.g., Round Robin, Priority-based, or Multi-Level Feedback Queue).
-- Context switching between executing environments.
+According to the [PRD.md](../PRD.md), the process scheduler supports:
+- Process Control Block (`Task`) tracking register context, thread state, and priority.
+- Preemptive execution scheduling driven by 8254 PIT timer ticks (100 Hz).
+- Low-level assembly context switching (`switch_context`) saving callee-saved registers (`rbx`, `rsp`, `rbp`, `r12`-`r15`).
 
-## Open Decision #1 Impact
+## Architectural Implementation
 
-- **Build from scratch**: We will implement custom timer interrupt handlers, configure the CPU interrupt state, build a run queue, and write assembly context switches to save and restore registers.
-- **Adopt seL4**: Scheduling is largely managed by the seL4 microkernel using its scheduling model (priorities and time slices). Pyxis OS services will focus on managing and mapping the capability nodes of the scheduled threads.
+- **Context Switch Assembly (`arch/x86_64/context/switch.S`):** Switches CPU register state between executing task contexts.
+- **Timer Tick Dispatcher (`drivers/timer/pit.c`):** Generates 100 Hz interrupts to track kernel uptime and trigger preemptive scheduling slices.
+- **Rust Scheduler Core (`kernel/src/scheduler.rs`, `kernel/src/task.rs`):** Implements priority queues, task state transitions (`Ready`, `Running`, `Blocked`, `Terminated`), and safe run-queue management in Rust.
 
 ## Design Interfaces
 
