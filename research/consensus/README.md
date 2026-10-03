@@ -1,4 +1,4 @@
-# Astral Consensus Engine (Phase III · Track A)
+# Astral Consensus Engine (Phase 3 · Native Architecture)
 
 The multi-agent consensus layer for PyxisOS. Each specialist agent (Research, Security, Logic, Developer, Planner, Creative, Ethics, Statistical) independently analyzes requests; the Decision Arbitration Layer synthesizes their input into a transparent answer with conflict detection.
 
