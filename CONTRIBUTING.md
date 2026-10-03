@@ -28,8 +28,9 @@ Both are welcome and both are real engineering. Pick based on interest and backg
 
 ## Code style
 
-- **Rust** (Track B, and any Track A Rust components): `rustfmt` + `clippy`, no warnings on merge.
-- **JS/TS** (Track A components: `consensus/`, `automation/`, `shell/`, `nebula/prototype/`, and other web/orchestration logic): `prettier` + `eslint`.
+- **C & Assembly** (Freestanding Kernel Core in `arch/`, `kernel/`, `drivers/`, `mm/`, `fs/`, `include/`): clean C99/freestanding conventions, strict header boundaries, minimal comments.
+- **Rust** (Native systems and agents: `native/lunar-core/`, `native/consensus/`, `native/aegis/`, `kernel/src/`): `rustfmt` + `clippy`, `#![no_std]` compliance where applicable, zero warnings on merge.
+- **Shell** (`cli/pyxis`, `scripts/`, `tests/`): POSIX / bash syntax checked via `scripts/verify.sh`.
 - A formal style guide will land in `docs/` as the codebase grows. Until then, match the surrounding code.
 
 ## Proposing changes to the PRD itself
@@ -38,12 +39,12 @@ Both are welcome and both are real engineering. Pick based on interest and backg
 
 ## Testing expectations
 
-- **Track A:** unit tests per module. Any change to `consensus/`'s agents or consensus logic should run against the evaluation set in `research/` before merging — this protects against silently regressing consensus quality, which is the single most important property of the whole Council concept.
-- **Track B:** changes to `native/lunar-core/` need to boot clean in the QEMU CI job (once it exists); changes to `native/aegis/` need to pass the isolation test suite before merge, no exceptions.
+- **Track A:** unit tests per module. Any change to Astral Consensus (`native/consensus/`) agents or arbitration logic should run against the evaluation set in `research/` before merging — this protects against silently regressing consensus quality.
+- **Track B:** changes to freestanding kernel and `native/lunar-core/` need to compile cleanly (`make check`, `cargo check`); changes to `native/aegis/` need to pass isolation tests before merge.
 
 ## Security disclosures
 
-If you find an isolation, sandboxing, or privilege-escalation issue — especially in `native/aegis/` or the automation approval-gate logic in `automation/` — please open a private security advisory on the repo rather than a public issue. A dedicated [SECURITY.md](file:///c:/ProjectsPP/Pyxis/files/PyxisOS-repo-scaffold/PyxisOS/SECURITY.md) contains our security policy and disclosure process. Please refer to it before reporting any vulnerability.
+If you find an isolation, sandboxing, or privilege-escalation issue — especially in `native/aegis/` or system execution gates — please open a private security advisory on the repo rather than a public issue. A dedicated [SECURITY.md](SECURITY.md) contains our security policy and disclosure process. Please refer to it before reporting any vulnerability.
 
 ## Code of conduct
 
