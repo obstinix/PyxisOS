@@ -19,9 +19,9 @@ This roadmap documents the status of all past, present, and future PyxisOS subsy
 
 ### 1. Operating System Substrate & Identity
 - `[COMPLETED]` Base Linux OS installation on ThinkPad X1 Carbon 5th Gen
-- `[COMPLETED]` Distribution rebranding to PyxisOS in `/etc/os-release`
+- `[COMPLETED]` System identity and OS release metadata in `/etc/os-release`
 - `[COMPLETED]` Hostname definition (`pyxisos`) and user environment
-- `[TEMPORARY]` Arch Linux base package layer for Track A
+- `[TEMPORARY]` Linux-based operational foundation for Track A
 - `[PLANNED]` Independent PyxisOS package repository and build infrastructure
 
 ### 2. Boot & Storage Architecture
@@ -38,7 +38,7 @@ This roadmap documents the status of all past, present, and future PyxisOS subsy
 - `[COMPLETED]` SDDM display manager integration
 - `[TEMPORARY]` KDE Plasma as primary graphical desktop
 - `[PLANNED]` Hyprland Wayland compositor integration (exploration paused)
-- `[PROTOTYPE]` Nebula Engine 3D spatial multitasking & parallax interface (`nebula/prototype/`)
+- `[PROTOTYPE]` Nebula spatial multitasking and 3D window interface research (`research/nebula/`)
 - `[PLANNED]` Native Bevy/Rust Wayland compositor for Track B
 
 ### 4. CLI & System Tooling
@@ -50,12 +50,13 @@ This roadmap documents the status of all past, present, and future PyxisOS subsy
 - `[PAUSED]` Getty / TTY login banner integration (paused to maintain standard console)
 
 ### 5. Native Systems Architecture (Track B)
+- `[IN DEVELOPMENT]` Freestanding x86_64 kernel core in C, Rust, and ASM (`arch/`, `kernel/`)
+- `[IN DEVELOPMENT]` Memory management (bitmap PMM, 4-level PML4 VMM, heap chunk allocator in `mm/`)
+- `[IN DEVELOPMENT]` Device drivers (16550 UART, VGA text, 8254 PIT, PS/2 keyboard in `drivers/`)
 - `[IN DEVELOPMENT]` Lunar Core `#![no_std]` Rust microkernel scaffold (`native/lunar-core`)
 - `[IN DEVELOPMENT]` Custom compiler target specification (`x86_64-pyxis.json`)
-- `[PLANNED]` Memory subsystem (paging, heap allocator, physical frame manager)
-- `[PLANNED]` Preemptive multi-priority scheduler
-- `[PLANNED]` IPC message passing subsystem
-- `[PLANNED]` Aegis Type-1 hypervisor / security sandbox (`native/aegis`)
+- `[IN DEVELOPMENT]` Safe task management, round-robin scheduler, and typed IPC in Rust
+- `[PLANNED]` Aegis capability isolation & execution sandbox (`native/aegis`)
 
 ### 6. Autonomous Intelligence Layer
 - `[IN DEVELOPMENT]` Astral Consensus Engine native Rust implementation (`native/consensus/`)
