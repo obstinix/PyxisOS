@@ -3,19 +3,20 @@
 This document describes the planned memory management subsystem for PyxisOS Native (Track B).
 
 > [!NOTE]
-> The memory management subsystem is currently in the **Design Stage**. No implementation details are finalized, pending the resolution of Open Decision #1.
+> The memory management subsystem is implemented in freestanding C and x86_64 assembly in `mm/` (bitmap physical frame allocator, 4-level PML4 paging, heap chunk allocator), with corresponding Rust memory abstraction traits in `native/lunar-core/src/memory/`.
 
 ## Scope of Memory Management (PRD Phase I)
 
-According to the [PRD.md](file:///c:/ProjectsPP/Pyxis/files/PyxisOS-repo-scaffold/PyxisOS/docs/PRD.md), the memory manager must support:
-- Physical Memory Management: Tracking free/allocated page frames using a bitmap or buddy allocator.
-- Virtual Memory & Paging: Mapping virtual addresses to physical frames.
-- Kernel Heap Allocator: Supporting dynamic memory allocation inside the kernel (`malloc`/`free` or equivalent Rust allocator traits).
+According to the [PRD.md](../PRD.md), the memory manager supports:
+- Physical Memory Management: Tracking free/allocated page frames using a bitmap frame allocator (`mm/pmm.c`).
+- Virtual Memory & Paging: 4-level PML4 address space mapping (`mm/vmm.c`).
+- Kernel Heap Allocator: Boundary-tagged chunk allocator providing `kmalloc()` and `kfree()` (`mm/heap.c`).
 
-## Open Decision #1 Impact
+## Architectural Implementation
 
-- **Build from scratch**: We will need to write a custom physical frame allocator, set up a custom page table mapper, and implement a custom heap allocator trait (`core::alloc::GlobalAlloc`) in Rust.
-- **Adopt seL4**: Memory management will be delegated to seL4 capabilities. The kernel services will request memory resources by manipulating page capabilities through seL4 system calls.
+- **Physical Frame Allocator (`mm/pmm.c`):** Tracks 4KB physical pages across detected Multiboot memory zones via a memory bitmap.
+- **Virtual Memory Manager (`mm/vmm.c`):** Implements x86_64 4-level paging (PML4, PDPT, PD, PT) with support for 4KB pages and 2MB huge pages.
+- **Kernel Heap (`mm/heap.c`):** Manages dynamic kernel allocation with header chunk validation and zero-fill guarantees.
 
 ## Design Interfaces
 
