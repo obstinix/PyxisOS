@@ -1,8 +1,12 @@
-# native/ — PyxisOS Native (Track B)
+# native/ — PyxisOS Native Systems Workspace (Track B)
 
-The from-scratch systems track: a custom kernel, hypervisor, and (eventually) native spatial engine. This is long-horizon systems-research work, most useful for contributors with Rust/C and OS-internals background.
+This directory contains the native Rust workspace for PyxisOS's low-level systems architecture and AI coordination engine:
 
-- `lunar-core/` — Phase I, the kernel.
-- `aegis/` — Phase VI, the hypervisor. Note: Track A's actual sandboxing need is served by KVM/Firecracker, not this folder — this is the from-scratch, security-reviewed, long-term version.
+- `lunar-core/` — Experimental `#![no_std]` Rust microkernel architecture (task scheduling, memory abstraction traits, early logging, and target specifications).
+- `consensus/` — Astral Consensus Engine: native Rust multi-agent reasoning, evidence submission, and deterministic decision arbitration.
+- `aegis/` — Planned capability-based isolation and execution sandbox. (Track A operational sandboxing is provided by host virtualization/containment).
 
-See `docs/PRD.md` Section 5 for why this is a separate track from everything else in the repo, and Section 14, Open Decision #1, for the build-vs-adopt question this track should resolve early.
+For comprehensive technical specifications and milestone status, see:
+- [Long-Term Project Vision](../docs/PROJECT_VISION.md)
+- [Phased Milestone Roadmap](../docs/ROADMAP.md)
+- [Canonical Project Status](../docs/PROJECT_STATUS.md)
