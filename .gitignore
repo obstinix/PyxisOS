@@ -56,3 +56,21 @@ id_ed25519
 !boot/
 *.dump
 *.log
+
+# AI / Autonomous agent memory, prompt, and state artifacts
+memory.md
+MEMORY.md
+context.md
+CONTEXT.md
+prompt.md
+PROMPT.md
+agent.md
+AGENTS.md
+CLAUDE.md
+copilot.md
+*.agent.log
+.agent/
+.claude/
+.copilot/
+.autonomous/
+.gemini/
